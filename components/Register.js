@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Button, TextInput } from 'react-native'
 
-import { initializeApp } from 'firebase/app';
+import auth from '@react-native-firebase/auth';
 
 export class Register extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ export class Register extends Component {
 
   onSignUp() {
     const { email, password, name } = this.state;
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    auth().createUserWithEmailAndPassword(email, password)
       .then((result) => {
         console.log(result)
       })

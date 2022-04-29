@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Button, TextInput } from 'react-native'
 
-import { initializeApp } from 'firebase/app';
+import auth from '@react-native-firebase/auth';
 
 export class Login extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export class Login extends Component {
 
   onSignIn() {
     const { email, password } = this.state;
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    auth().signInWithEmailAndPassword(email, password)
       .then((result) => {
         console.log(result)
       })

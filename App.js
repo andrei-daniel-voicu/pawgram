@@ -8,8 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import LandingScreen from './components/Landing'
 import RegisterScreen from './components/Register'
 
-import { initializeApp } from 'firebase/app';
-
+import auth from '@react-native-firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,8 +21,6 @@ const firebaseConfig = {
 
 };
 
-const app = initializeApp(firebaseConfig);
-
 const Stack = createStackNavigator();
 
 export class App extends Component {
@@ -35,7 +32,7 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
+    auth().onAuthStateChanged((user) => {
       if (!user) {
         this.setState({
           loggedIn: false,
