@@ -37,7 +37,15 @@ const LoginForm = () => {
   const submitForm = async () => {
     if (isValidForm()) {
       try {
-        const res = await client.post('/sign-in', { ...userInfo });
+        const res = await fetch('http://localhost:2345/sign-in', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userInfo)
+            })
+        
+        // await client.post('/sign-in', { ...userInfo });
 
         if (res.data.success) {
           setUserInfo({ email: '', password: '' });

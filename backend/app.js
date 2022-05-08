@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 require('dotenv').config();
 require('./models/db');
 const userRouter = require('./routes/user');
@@ -16,6 +17,9 @@ const app = express();
 // });
 
 app.use(express.json());
+app.use(cors({
+  origin: '*'
+}))
 app.use(userRouter);
 
 // const test = async (email, password) => {
