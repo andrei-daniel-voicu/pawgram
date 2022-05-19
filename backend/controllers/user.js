@@ -21,6 +21,7 @@ exports.createUser = async (req, res) => {
 };
 
 exports.userSignIn = async (req, res) => {
+  // res.send('Fraier');
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -63,7 +64,7 @@ exports.userSignIn = async (req, res) => {
     avatar: user.avatar ? user.avatar : '',
   };
 
-  res.json({ success: true, user: userInfo, token });
+  res.json({ success: true, user: userInfo});
 };
 
 exports.uploadProfile = async (req, res) => {

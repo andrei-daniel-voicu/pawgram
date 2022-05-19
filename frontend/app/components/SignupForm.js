@@ -113,8 +113,8 @@ const SignupForm = ({ navigation }) => {
         // }
       } else { console.log ("Nu e succes") }
 
-      // formikActions.resetForm();
-      // formikActions.setSubmitting(false); 
+      formikActions.resetForm();
+      formikActions.setSubmitting(false); 
       } catch (e) {
         console.log(e);
       }

@@ -24,22 +24,18 @@ exports.validateUserSignUp = [
     .isEmpty()
     .custom((value, { req }) => {
       if (value !== req.body.password) {
-        console.log("Muie", value, " Req ", req.body.password)
         throw new Error('Both password must be same!');
       }
-      console.log("La Validare Frate", req)
       return true;
     }),
 ];
 
 exports.userVlidation = (req, res, next) => {
   const result = validationResult(req).array();
-  console.log("result Vlidation", result)
   if (!result.length) return next();
 
   const error = result[0].msg;
-  console.log("Result ", result)
-  res.json({ success: false, message: `ce naiba ${error}` });
+  res.json({ success: false, message: error });
 };
 
 exports.validateUserSignIn = [
