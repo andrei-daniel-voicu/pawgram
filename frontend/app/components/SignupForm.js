@@ -46,6 +46,8 @@ const SignupForm = ({ navigation }) => {
 
   const isValidForm = () => {
     // we will accept only if all of the fields have value
+
+    console.log("Validare ce naiba frate")
     if (!isValidObjField(userInfo))
       return updateError('Required all fields!', setError);
     // if valid name with 3 or more characters
@@ -63,7 +65,7 @@ const SignupForm = ({ navigation }) => {
     return true;
   };
 
-  const sumbitForm = () => {
+  const submitForm = () => {
     if (isValidForm()) {
       // submit form
       console.log(userInfo);
@@ -71,26 +73,51 @@ const SignupForm = ({ navigation }) => {
   };
 
   const signUp = async (values, formikActions) => {
-    const res = await client.post('/create-user', {
-      ...values,
-    });
+    console.log("SignUp Ce naiba")
+    
+      const rest = await fetch('http://localhost:2345/create-user', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
 
-    if (res.data.success) {
-      const signInRes = await client.post('/sign-in', {
-        email: values.email,
-        password: values.password,
-      });
-      if (signInRes.data.success) {
-        navigation.dispatch(
-          StackActions.replace('ImageUpload', {
-            token: signInRes.data.token,
-          })
-        );
+      console.log("Res", rest)
+    try {
+      console.log("Why", rest.ok)
+      if (rest.ok) {
+        // const signInRes = await client.post('/sign-in', {
+        //   email: values.email,
+        //   password: values.password,
+        // });
+        // const signInRes = await fetch('http://localhost:2345/sign-in', {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     email: values.email,
+        //     password: values.password,
+        //   }),
+        // })
+
+        // console.log("Resultat signInRes", signInRes)
+        
+        // if (signInRes.data.success) {
+        //   navigation.dispatch(
+        //     StackActions.replace('ImageUpload', {
+        //       token: signInRes.data.token,
+        //     })
+        //   );
+        // }
+      } else { console.log ("Nu e succes") }
+
+      formikActions.resetForm();
+      formikActions.setSubmitting(false); 
+      } catch (e) {
+        console.log(e);
       }
-    }
-
-    formikActions.resetForm();
-    formikActions.setSubmitting(false);
   };
 
   return (

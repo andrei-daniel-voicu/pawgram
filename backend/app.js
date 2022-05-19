@@ -1,4 +1,6 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors')
 require('dotenv').config();
 require('./models/db');
 const userRouter = require('./routes/user');
@@ -7,15 +9,15 @@ const User = require('./models/user');
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   req.on('data', chunk => {
-//     const data = JSON.parse(chunk);
-//     req.body = data;
-//     next();
-//   });
-// });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
+// app.use(express.json());
+app.use(cors({
+  origin: '*'
+}))
 
-app.use(express.json());
+
 app.use(userRouter);
 
 // const test = async (email, password) => {

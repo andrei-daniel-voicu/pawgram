@@ -37,15 +37,33 @@ const LoginForm = () => {
   const submitForm = async () => {
     if (isValidForm()) {
       try {
-        const res = await client.post('/sign-in', { ...userInfo });
-
-        if (res.data.success) {
+        console.log("User Info", userInfo)
+        const res = await fetch('http://localhost:2345/sign-in', {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userInfo)
+            });
+            
+        const reader = res.body
+        .pipeThrough(new TextDecoderStream())
+        .getReader();
+          
+        let data = '';
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          data = value;
+        }
+        
+        const result = JSON.parse(data);     
+        if (result.success) {
           setUserInfo({ email: '', password: '' });
-          setProfile(res.data.user);
+          setProfile(result.user);
           setIsLoggedIn(true);
         }
 
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }

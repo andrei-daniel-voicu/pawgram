@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
+require('dotenv').config()
 
 mongoose
   .connect(
-    "mongodb+srv://pawgram:parola@cluster0.dtj4g.mongodb.net/Pawgram",
-    //process.env.MONGO_URI,
-     {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
+    process.env.MONGO_URI,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
   })
   .then(() => {
     console.log('our db is connected');
