@@ -4,28 +4,28 @@ const sharp = require('sharp');
 const cloudinary = require('../helper/imageUpload');
 
 exports.createUser = async (req, res) => {
-  const { fullname, email, password } = req.body;
-  const isNewUser = await User.isThisEmailInUse(email);
+  const isNewUser = await User.isThisEmailInUse(req.body["email"]);
   if (!isNewUser)
     return res.json({
       success: false,
       message: 'This email is already in use, try sign-in',
     });
-  const user = await User({
-    fullname,
-    email,
-    password,
-  });
+  const user = await User(req.body);
   await user.save();
+  const newUser = {'email': user["email"], 'username': user["username"]}
   res.json({ success: true, user });
 };
 
 exports.userSignIn = async (req, res) => {
-  // res.send('Fraier');
   const { email, password } = req.body;
-
-  const user = await User.findOne({ email });
-
+  const user = await User.findOne(
+    {
+    'email': { $in: email}},
+    function (err, obj) {
+      if(err) return console.log(err);
+      console.log("obj ", obj);
+    }
+  );
   if (!user)
     return res.json({
       success: false,
@@ -64,7 +64,7 @@ exports.userSignIn = async (req, res) => {
     avatar: user.avatar ? user.avatar : '',
   };
 
-  res.json({ success: true, user: userInfo});
+  res.json({ success: true, user: userInfo, token});
 };
 
 exports.uploadProfile = async (req, res) => {
@@ -98,6 +98,69 @@ exports.uploadProfile = async (req, res) => {
   }
 };
 
+exports.editProfileUser = async (req, res) => {
+  const updates = Object.keys(req.body)
+  const allowedUpdates = [
+    'date',
+    'type',
+    'username',
+    'password',
+    'email',
+    'fullname',
+    'patreonLink',
+    'postList',
+    'followingList',
+    'adoptionRequestList',
+    'notificationList',
+    'avatar',
+    'tokens'
+  ]
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+  if (!isValidOperation) {
+    return res.status(400).send({ error: 'Invalid updates!' })
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id,
+       req.body, 
+       { new: true, runValidators: true })
+    
+    if (!user) {
+        return res.status(404).send()
+    }
+
+    res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+}
+
+exports.addPostIdToPostList = async (req, res) => {
+  console.log("add Post to User", req.params.id, req.body)
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ['id']
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
+
+  if (!isValidOperation) {
+      return res.status(400).send({ error: 'Invalid updates!' })
+  }
+  try {
+      const user = await User.updateOne(
+          { _id: req.params.id},
+          {"$push": { "postList": req.body.id } }
+        ).exec();
+      
+      if (!user) {
+          return res.status(404).send()
+      }
+
+      res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
 exports.signOut = async (req, res) => {
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(' ')[1];
@@ -113,5 +176,124 @@ exports.signOut = async (req, res) => {
 
     await User.findByIdAndUpdate(req.user._id, { tokens: newTokens });
     res.json({ success: true, message: 'Sign out successfully!' });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+      const user = await User.findByIdAndDelete(req.params.id)
+
+      if (!user) {
+          res.status(404).send()
+      } else {
+          res.send(user)
+      }
+  } catch (e) {
+      console.log(e)
+      res.status(500).send()
+  }
+};
+
+exports.addFollower = async (req, res) => {
+  console.log("Aici")
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ['id']
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  if (!isValidOperation) {
+      return res.status(400).send({ error: 'Invalid updates!' })
+  }
+  console.log("Follower", req.body)
+
+  try {
+      const user = await User.updateOne(
+          { _id: req.params.id},
+          {"$push": { "followersList": req.body } }
+        ).exec();
+
+      if (!user) {
+          return res.status(404).send()
+      }
+
+      res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.addFollowing = async (req, res) => {
+  console.log("Aici")
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ['id']
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  if (!isValidOperation) {
+      return res.status(400).send({ error: 'Invalid updates!' })
+  }
+  console.log("Following", req.body)
+
+  try {
+      const user = await User.updateOne(
+          { _id: req.params.id},
+          {"$push": { "followingList": req.body } }
+        ).exec();
+
+      if (!user) {
+          return res.status(404).send()
+      }
+
+      res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.addAdoption = async (req, res) => {
+  console.log("Aici")
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ['id']
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  if (!isValidOperation) {
+      return res.status(400).send({ error: 'Invalid updates!' })
+  }
+  console.log("adoption", req.body)
+
+  try {
+      const user = await User.updateOne(
+          { _id: req.params.id},
+          {"$push": { "adoptionRequestList": req.body } }
+        ).exec();
+
+      if (!user) {
+          return res.status(404).send()
+      }
+
+      res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.addNotification = async (req, res) => {
+  console.log("Aici")
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ['id']
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  if (!isValidOperation) {
+      return res.status(400).send({ error: 'Invalid updates!' })
+  }
+  console.log("adoption", req.body)
+
+  try {
+      const user = await User.updateOne(
+          { _id: req.params.id},
+          {"$push": { "notificationList": req.body } }
+        ).exec();
+
+      if (!user) {
+          return res.status(404).send()
+      }
+
+      res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
   }
 };

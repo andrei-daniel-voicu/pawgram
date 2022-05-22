@@ -5,6 +5,7 @@ const LoginContext = createContext();
 const LoginProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profile, setProfile] = useState({});
+  console.log(profile);
 
   return (
     <LoginContext.Provider

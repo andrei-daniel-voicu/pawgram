@@ -2,11 +2,16 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  fullname: {
+  type: {
     type: String,
     required: true,
   },
-  email: {
+  date: {
+    type: Date,
+    required: true,
+    trim: true
+  },
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -15,8 +20,41 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  fullname: {
+    type: String,
+    required: true,
+  },
+  patreonLink: {
+    type: String
+  },
+  postList:
+    [{ 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
+    }],
+  followingList:
+    [{ 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+  followersList:
+    [{ 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+  adoptionRequestList: 
+    [{ 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'AdoptionRequest'
+    }],
+  notificationList: [{ type: Object }],
   avatar: String,
-  tokens: [{ type: Object }],
+  tokens: [{ type: Object }]
 });
 
 userSchema.pre('save', function (next) {
