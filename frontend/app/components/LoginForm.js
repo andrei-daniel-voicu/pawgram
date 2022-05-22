@@ -37,7 +37,7 @@ const LoginForm = () => {
   const submitForm = async () => {
     if (isValidForm()) {
       try {
-        console.log("User Info", userInfo)
+        // console.log("User Info", userInfo)
         const res = await fetch('http://localhost:2345/sign-in', {
             method: "POST",
             headers: {
@@ -45,7 +45,7 @@ const LoginForm = () => {
             },
             body: JSON.stringify(userInfo)
             });
-            
+        
         const reader = res.body
         .pipeThrough(new TextDecoderStream())
         .getReader();
