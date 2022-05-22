@@ -4,28 +4,28 @@ const sharp = require('sharp');
 const cloudinary = require('../helper/imageUpload');
 
 exports.createUser = async (req, res) => {
-  const { fullname, email, password } = req.body;
-  const isNewUser = await User.isThisEmailInUse(email);
+  const isNewUser = await User.isThisEmailInUse(req.body["email"]);
   if (!isNewUser)
     return res.json({
       success: false,
       message: 'This email is already in use, try sign-in',
     });
-  const user = await User({
-    fullname,
-    email,
-    password,
-  });
+  const user = await User(req.body);
   await user.save();
+  const newUser = {'email': user["email"], 'username': user["username"]}
   res.json({ success: true, user });
 };
 
 exports.userSignIn = async (req, res) => {
-  // res.send('Fraier');
   const { email, password } = req.body;
-
-  const user = await User.findOne({ email });
-
+  const user = await User.findOne(
+    {
+    'email': { $in: email}},
+    function (err, obj) {
+      if(err) return console.log(err);
+      console.log("obj ", obj);
+    }
+  );
   if (!user)
     return res.json({
       success: false,
@@ -64,7 +64,7 @@ exports.userSignIn = async (req, res) => {
     avatar: user.avatar ? user.avatar : '',
   };
 
-  res.json({ success: true, user: userInfo});
+  res.json({ success: true, user: userInfo, token});
 };
 
 exports.uploadProfile = async (req, res) => {

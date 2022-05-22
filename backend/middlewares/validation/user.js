@@ -31,6 +31,7 @@ exports.validateUserSignUp = [
 ];
 
 exports.userVlidation = (req, res, next) => {
+  console.log("User Vlidation")
   const result = validationResult(req).array();
   if (!result.length) return next();
 

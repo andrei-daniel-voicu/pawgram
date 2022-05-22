@@ -4,6 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import { isValidEmail, isValidObjField, updateError } from '../utils/methods';
 import FormContainer from './FormContainer';
 import FormInput from './FormInput';
+import { useLogin } from '../context/LoginProvider';
 import FormSubmitButton from './FormSubmitButton';
 import { StackActions } from '@react-navigation/native';
 
@@ -29,11 +30,16 @@ const validationSchema = Yup.object({
 });
 
 const SignupForm = ({ navigation }) => {
+  const { setIsLoggedIn, setProfile } = useLogin();
   const userInfo = {
     fullname: '',
     email: '',
     password: '',
     confirmPassword: '',
+    date: new Date(),
+    username: '',
+    type: 'Animal',
+    patreonLink: ''
   };
 
   const [error, setError] = useState('');
@@ -53,6 +59,8 @@ const SignupForm = ({ navigation }) => {
     // if valid name with 3 or more characters
     if (!fullname.trim() || fullname.length < 3)
       return updateError('Invalid name!', setError);
+    if (!username.trim() || username.length < 5)
+      return updateError('Invalid username!', setError);
     // only valid email id is allowed
     if (!isValidEmail(email)) return updateError('Invalid email!', setError);
     // password must have 8 or more characters
@@ -72,9 +80,7 @@ const SignupForm = ({ navigation }) => {
     }
   };
 
-  const signUp = async (values, formikActions) => {
-    console.log("SignUp Ce naiba")
-    
+  const signUp = async (values, formikActions) => {    
       const rest = await fetch('http://localhost:2345/create-user', {
         method: "POST",
         headers: {
@@ -83,38 +89,54 @@ const SignupForm = ({ navigation }) => {
         body: JSON.stringify(values),
       })
 
-      console.log("Res", rest)
     try {
-      console.log("Why", rest.ok)
       if (rest.ok) {
-        // const signInRes = await client.post('/sign-in', {
-        //   email: values.email,
-        //   password: values.password,
-        // });
-        // const signInRes = await fetch('http://localhost:2345/sign-in', {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     email: values.email,
-        //     password: values.password,
-        //   }),
-        // })
-
-        // console.log("Resultat signInRes", signInRes)
-        
-        // if (signInRes.data.success) {
-        //   navigation.dispatch(
-        //     StackActions.replace('ImageUpload', {
-        //       token: signInRes.data.token,
-        //     })
-        //   );
-        // }
+        const read = rest.body
+        .pipeThrough(new TextDecoderStream())
+        .getReader();
+        let data1 = '';
+        while (true) {
+          const { value, done } = await read.read();
+          if (done) break;
+          data1 = value;
+        }
+        const resu = JSON.parse(data1);
+        const res = await fetch('http://localhost:2345/sign-in', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: resu["user"]["email"],
+            password: values.password
+          })
+         })
+ 
+        const reader = res.body
+        .pipeThrough(new TextDecoderStream())
+        .getReader();
+        let data = '';
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          data = value;
+        }
+        const result = JSON.parse(data);   
+        console.log("Result", result)  
+        if (result.success) {
+          navigation.dispatch(
+            StackActions.replace('ImageUpload', {
+              token: result.token
+            })
+          );
+          formikActions.resetForm();
+          setProfile(result.user);
+          setIsLoggedIn(true);
+        }
       } else { console.log ("Nu e succes") }
 
       formikActions.resetForm();
-      formikActions.setSubmitting(false); 
+      // formikActions.setSubmitting(false); 
       } catch (e) {
         console.log(e);
       }
@@ -136,7 +158,7 @@ const SignupForm = ({ navigation }) => {
           handleBlur,
           handleSubmit,
         }) => {
-          const { fullname, username, email, password, confirmPassword } = values;
+          const { fullname, username, email, password, confirmPassword, type } = values;
           return (
             <>
               <FormInput
