@@ -13,16 +13,13 @@ const postSchema = new mongoose.Schema({
   },
   text: {
     type: String,
-    required: true,
-    unique: true,
+    required: true
   },
   photoLink: {
     type: String,
-    required: true,
   },
   videoLink: {
-    type: String,
-    required: true,
+    type: String
   },
   commentList: [{ type: Object }],
   likesList: 

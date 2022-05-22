@@ -30,8 +30,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   patreonLink: {
-    type: String,
-    required: true,
+    type: String
   },
   postList:
     [{ 

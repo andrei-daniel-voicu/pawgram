@@ -136,7 +136,7 @@ const SignupForm = ({ navigation }) => {
           handleBlur,
           handleSubmit,
         }) => {
-          const { fullname, email, password, confirmPassword } = values;
+          const { fullname, username, email, password, confirmPassword } = values;
           return (
             <>
               <FormInput
@@ -146,6 +146,14 @@ const SignupForm = ({ navigation }) => {
                 onBlur={handleBlur('fullname')}
                 label='Full Name'
                 placeholder='John Smith'
+              />
+              <FormInput
+                value={username}
+                error={touched.username && errors.username}
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                label='Username'
+                placeholder='john.smith'
               />
               <FormInput
                 value={email}
