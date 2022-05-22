@@ -6,16 +6,20 @@ const {
   userSignIn,
   uploadProfile,
   signOut,
+  deleteUser,
+  addPostIdToPostList,
+  editProfileUser,
+  addFollower,
+  addFollowing,
+  addAdoption,
+  addNotification
 } = require('../controllers/user');
-const {
-  createPost
-} = require('../controllers/post');
 
 const { isAuth } = require('../middlewares/auth');
 const {
   validateUserSignUp,
   userVlidation,
-  validateUserSignIn,
+  validateUserSignIn
 } = require('../middlewares/validation/user');
 
 const multer = require('multer');
@@ -40,5 +44,20 @@ router.post(
   uploads.single('profile'),
   uploadProfile
 );
-router.post('/create-post', createPost);
+router.patch('/edit-profile/:id', editProfileUser);
+router.patch('/add-postId-user/:id', addPostIdToPostList);
+router.delete('/delete-user/:id', deleteUser);
+
+router.post('/add-follower/:id', addFollower);
+router.patch('/delete-follower/:id');
+
+router.post('/add-following/:id', addFollowing);
+router.patch('/delete-following/:id');
+
+router.post('/add-adoption/:id', addAdoption);
+router.patch('/delete-all-adoption/:id');
+
+router.post('/add-notification/:id', addNotification);
+router.patch('/delete-notification/:id');
+
 module.exports = router;

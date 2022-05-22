@@ -4,29 +4,26 @@ const cors = require('cors')
 require('dotenv').config();
 require('./models/db');
 const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
+const messageRouter = require('./routes/message');
+const adoptionRouter = require('./routes/adoption');
 
-const User = require('./models/user');
+// const User = require('./models/user');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
-// app.use(express.json());
 app.use(cors({
   origin: '*'
 }))
 
-
 app.use(userRouter);
+app.use(postRouter);
+app.use(messageRouter);
+app.use(adoptionRouter);
 
-// const test = async (email, password) => {
-//   const user = await User.findOne({ email: email });
-//   const result = await user.comparePassword(password);
-//   console.log(result);
-// };
-
-// test('niraj@email.com', 'niraj12');
 
 app.get('/test', (req, res) => {
   res.send('Hello world');

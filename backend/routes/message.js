@@ -6,7 +6,7 @@ const {
   getMessageById,
   deleteMessage
 } = require('../controllers/message');
-
+s
 const multer = require('multer');
 
 const storage = multer.diskStorage({});
@@ -20,7 +20,7 @@ const fileFilter = (req, file, cb) => {
 };
 const uploads = multer({ storage, fileFilter });
 
-router.post('/create-message', createMessage);git 
+router.post('/create-message', createMessage);
 router.delete('/delete-message/:id', deleteMessage);
 router.get('/get-message/:id', getMessageById);
 
