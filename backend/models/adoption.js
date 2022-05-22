@@ -36,7 +36,7 @@ const adoptionRequestSchema = new mongoose.Schema({
   approve: {
     type: Boolean,
     required: true,
-  },
+  }
 });
 
 module.exports = mongoose.model('AdoptionRequest', adoptionRequestSchema);
