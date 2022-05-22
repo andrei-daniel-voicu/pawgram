@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
+import Post from './Post';
+
 const Home = () => {
   return (
     <View style={styles.container}>

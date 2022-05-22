@@ -7,6 +7,10 @@ const {
   uploadProfile,
   signOut,
 } = require('../controllers/user');
+const {
+  createPost
+} = require('../controllers/post');
+
 const { isAuth } = require('../middlewares/auth');
 const {
   validateUserSignUp,
@@ -36,5 +40,5 @@ router.post(
   uploads.single('profile'),
   uploadProfile
 );
-
+router.post('/create-post', createPost);
 module.exports = router;
