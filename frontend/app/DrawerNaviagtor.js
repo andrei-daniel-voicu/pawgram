@@ -9,6 +9,7 @@ import {
 import Home from './components/Home';
 import Search from './components/Search';
 import UserProfile from './components/UserProfile';
+import Post from './components/Post';
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();
@@ -90,6 +91,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen component={Home} name='Home' />
       <Drawer.Screen component={UserProfile} name='Profile' />
       <Drawer.Screen component={Search} name='Search' />
+      <Drawer.Screen component={Post} name='Post' />
     </Drawer.Navigator>
   );
 };

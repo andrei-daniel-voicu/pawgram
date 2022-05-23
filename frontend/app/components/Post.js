@@ -1,111 +1,120 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native'
-import * as Yup from 'yup'
-import { Formik } from 'formik'
+import React, { useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 
-const uploadPostSchema = Yup.object().shape({
-  imageUrl: Yup.string().url().required('A URL is required'),
-  caption: Yup.string().max(2200, 'Caption has reached maximum characters'),
-})
+import { isValidEmail, isValidObjField, updateError } from '../utils/methods';
+import FormContainer from './FormContainer';
+import FormInput from './FormInput';
+import { useLogin } from '../context/LoginProvider';
+import FormSubmitButton from './FormSubmitButton';
+import { StackActions } from '@react-navigation/native';
 
-const PLACEHOLDER_IMG =
-  'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg'
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-const FormikPostUploader = ({ navigation }) => {
-  const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG)
-  const [profile, setProfile] = useState(null)
+import client from '../api/client';
 
-  const auth = getAuth()
+const validationSchema = Yup.object({
+  url: Yup.string()
+    .trim()
+    .min(3, 'Invalid url!')
+    .required('URL is required!'),
+});
 
-  useEffect(() => getProfile(), [])
+const Post = ({ navigation }) => {
+  const { setIsLoggedIn, setProfile } = useLogin();
+  const userInfo = {
+    url: '',
+    caption: '',
+    date: new Date(),
+  };
 
-  const getProfile = async () => {
-    const userDocRef = doc(db, `users/${auth.currentUser.email}`)
-    const docSnap = await getDoc(userDocRef)
-    const data = docSnap.data()
+  const [error, setError] = useState('');
 
-    setProfile({
-      username: data.username,
-      pic: data.pic,
-      uid: data.uid,
-      email: data.email
-    })
-  }
+  const { url, caption } = userInfo;
 
-  const addPost = (imageUrl, caption) =>
-    addDoc(collection(db, `users/${auth.currentUser.email}`, 'posts'), {
-      timestamp: serverTimestamp(),
-      username: profile.username,
-      pic: profile.pic,
-      uid: profile.uid,
-      email: profile.email,
-      caption,
-      imageUrl,
-      liked: [],
-      comments: [],
-    }).then(() => navigation.goBack())
+  const handleOnChangeText = (value, fieldName) => {
+    setUserInfo({ ...userInfo, [fieldName]: value });
+  };
+
+  const isValidForm = () => {
+    // we will accept only if all of the fields have value
+
+    console.log("Validare ce naiba frate")
+    if (!isValidObjField(userInfo))
+      return updateError('Required all fields!', setError);
+    // if valid url with 3 or more characters
+    if (!url.trim() || url.length < 3)
+      return updateError('Invalid url!', setError);
+
+    return true;
+  };
+
+  const submitForm = () => {
+    if (isValidForm()) {
+      // submit form
+      console.log(userInfo);
+    }
+  };
+
+  const post = async (values, formikActions) => {    
+      const rest = await fetch(`http://localhost:2345/create-post/${profile._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+  };
 
   return (
-    <Formik
-      initialValues={{ caption: '', imageUrl: '' }}
-      onSubmit={(values) => {
-        addPost(values.imageUrl, values.caption)
-      }}
-      validationSchema={uploadPostSchema}
-      validateOnMount={true}
-    >
-      {({
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        values,
-        errors,
-        isValid,
-      }) => (
-        <>
-          <View
-            style={{
-              margin: 20,
-              flexDirection: 'row',
-            }}
-          >
-            <Image
-              source={{
-                uri: validUrl.isUri(thumbnailUrl) || PLACEHOLDER_IMG,
-              }}
-              style={{ width: 100, height: 100, borderRadius: 9 }}
-            />
-            <TextInput
-              style={{ color: 'white', fontSize: 20, marginLeft: 10, flex: 1 }}
-              placeholder="Write a caption..."
-              placeholderTextColor="gray"
-              multiline={true}
-              onChangeText={handleChange('caption')}
-              onBlur={handleBlur('caption')}
-              value={values.caption}
-            />
-          </View>
-          <TextInput
-            onChange={(e) => setThumbnailUrl(e.nativeEvent.text)}
-            style={{ color: 'white', fontSize: 18 }}
-            placeholder="Enter image URL"
-            placeholderTextColor="gray"
-            onChangeText={handleChange('imageUrl')}
-            onBlur={handleBlur('imageUrl')}
-            value={values.imageUrl}
-          />
-          {errors.imageUrl && (
-            <Text style={{ fontSize: 20, color: 'red' }}>
-              {errors.imageUrl}
-            </Text>
-          )}
-          <Button onPress={handleSubmit} title="Share" disabled={!isValid} />
-        </>
-      )}
-    </Formik>
-  )
-}
+    <FormContainer>
+      <Formik
+        initialValues={userInfo}
+        validationSchema={validationSchema}
+        onSubmit={post}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          isSubmitting,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => {
+          const { url, caption } = values;
+          return (
+            <>
+              <FormInput
+                value={url}
+                error={touched.url && errors.url}
+                onChangeText={handleChange('url')}
+                onBlur={handleBlur('url')}
+                label='URL'
+                placeholder='http://photo.jpg'
+              />
+              <FormInput
+                value={caption}
+                error={touched.caption && errors.caption}
+                onChangeText={handleChange('caption')}
+                onBlur={handleBlur('caption')}
+                autoCapitalize='none'
+                label='Caption'
+                placeholder='What a lovely picture!'
+              />
+              <FormSubmitButton
+                submitting={isSubmitting}
+                onPress={handleSubmit}
+                title='Post'
+              />
+            </>
+          );
+        }}
+      </Formik>
+    </FormContainer>
+  );
+};
 
-export default FormikPostUploader
+const styles = StyleSheet.create({});
 
-const styles = StyleSheet.create({})
+export default Post;
