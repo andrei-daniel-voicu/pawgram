@@ -6,7 +6,7 @@ const {
   getMessageById,
   deleteMessage
 } = require('../controllers/message');
-s
+
 const multer = require('multer');
 
 const storage = multer.diskStorage({});

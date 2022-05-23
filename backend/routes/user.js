@@ -45,8 +45,10 @@ router.post(
   uploadProfile
 );
 router.patch('/edit-profile/:id', editProfileUser);
-router.patch('/add-postId-user/:id', addPostIdToPostList);
 router.delete('/delete-user/:id', deleteUser);
+
+router.post('/add-post-user/:id', addPostIdToPostList);
+router.delete('/delete-post-user/:id');
 
 router.post('/add-follower/:id', addFollower);
 router.patch('/delete-follower/:id');

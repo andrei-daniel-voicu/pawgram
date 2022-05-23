@@ -42,6 +42,19 @@ const CustomDrawer = props => {
           />
         </View>
         <DrawerItemList {...props} />
+          {/* <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 0,
+            left: 0,
+            top: 10,
+            backgroundColor: '#f6f6f6',
+            padding: 20,
+          }}
+          onPress={() =>}
+        >
+          <Text>Add Post</Text>
+        </TouchableOpacity> */}
       </DrawerContentScrollView>
       <TouchableOpacity
         style={{
