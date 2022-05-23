@@ -1,20 +1,110 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView } from 'react-native';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useLogin } from '../context/LoginProvider';
+// import { PostView } from '../components/PostView'
+
+const PostView = (props) => {
+    // const { setIsLoggedIn, profile } = useLogin();
+    
+    // const posts = GetUserPosts();
+    console.log("ce naiba", props.photo)
+    
+    return (
+        <View style={styles.mediaImageContainer}>
+            <Image source={{uri:'https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwMyUyRjAyJTJGMTE2NjIxN18xMTY2/MjE3X25hcy1jYWluZS1HZXR0eUltYWdl/cy04MzY3MTY3OTYuanBnJnc9NzgwJmg9/NDQwJmhhc2g9NDk5ZTg5Yzk4NzhlZjlmODhhN2NmOGE1Y2EzZGUyOTk=.thumb.jpg'}} 
+            // style={styles.image} 
+            // resizeMode="cover"
+            ></Image>
+        </View>
+  );
+};
+
 
 const UserProfile = () => {
-  return (
+    const { setIsLoggedIn, profile } = useLogin();
+    const [posts, setPosts] = useState("");
+    // let posts = [];
+    const list = [];
+
+    useEffect(() => {
+        const GetUserPosts = async() => {
+            try {
+                const res = await fetch(`http://localhost:2345/get-all-posts/${profile._id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                //   body: JSON.stringify({
+                //     email: resu["user"]["email"],
+                //     password: values.password
+                //   })
+                })
+                // console.log("Postari", res);
+                const read = res.body
+                .pipeThrough(new TextDecoderStream())
+                .getReader();
+
+                let data1 = '';
+                while (true) {
+                    const { value, done } = await read.read();
+                    if (done) break;
+                        data1 = value;
+                }
+                let data = JSON.parse(data1);
+                // setPosts(JSON.parse(data1));
+                // posts = res.body;
+                // console.log("Posts", data);
+                // Promise.all[posts].then(post => )
+                data = data.sort((a, b) => a.date < b.date ? 1 : -1);
+
+                setPosts(data);
+                // for (const a of posts) {
+                // // posts.foreach( a => 
+                //     list.push(
+                //     <View style={styles.mediaImageContainer}>,
+                //         <Image source={require("../../assets/media1.jpg")} style={styles.image} resizeMode="cover"></Image>,
+                //         {/* <Image source={{uri: a["photoLink"]}} style={styles.image} resizeMode="cover"></Image> */}
+                //     </View>)
+                //     // console.log(a["photoLink"])
+                // }
+                console.log("The big list", posts["0"], posts["0"]["photoLink"])
+                return data;
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
+        GetUserPosts();
+
+    },[posts])
+    // const posts = GetUserPosts();
+
+    console.log("De aici", posts);
+    return (
     <SafeAreaView style={styles.container}>
+            <Button
+                title="Go somewhere"
+                onPress={() => {
+                    // Navigate using the `navigation` prop that you received
+                    navigation.navigate('SomeScreen');
+                }}
+            />
             <ScrollView showsVerticalScrollIndicator={true}>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
-                        <Image source={require("../../assets/cat.jpg")} style={styles.image} resizeMode="center"></Image>
+                        <Image source={{
+                            uri:
+                                profile.avatar ||
+                                'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
+                            }}
+                         style={styles.image} resizeMode="center"></Image>
                     </View>
                 </View>
 
                 <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Julie</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Professional cat</Text>
+                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{profile.fullname}</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>{profile.username}</Text>
                 </View>
 
                 <View style={{  alignSelf: "center", marginTop: 16 }}>
@@ -34,15 +124,16 @@ const UserProfile = () => {
 
                 <View style={{ marginTop: 80 }}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                        {/* <View>{list["0"]}</View> */}
+                        {/* {posts["0"]} */}
                         <View style={styles.mediaImageContainer}>
-                            <Image source={require("../../assets/media1.jpg")} style={styles.image} resizeMode="cover"></Image>
+                            <Image source={{uri: 
+                                 'https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwMyUyRjAyJTJGMTE2NjIxN18xMTY2/MjE3X25hcy1jYWluZS1HZXR0eUltYWdl/cy04MzY3MTY3OTYuanBnJnc9NzgwJmg9/NDQwJmhhc2g9NDk5ZTg5Yzk4NzhlZjlmODhhN2NmOGE1Y2EzZGUyOTk=.thumb.jpg'
+                                // posts ? undefined : 'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg'
+                                // posts["0"]["photoLink"]
+                                }} style={styles.image} resizeMode="cover"></Image>
                         </View>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../../assets/media2.jpg")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={require("../../assets/media3.jpg")} style={styles.image} resizeMode="cover"></Image>
-                        </View>
+
                     </ScrollView>
                     {/* <View style={styles.mediaCount}>
                         <Text style={[styles.text, { fontSize: 24, color: "#DFD8C8", fontWeight: "300" }]}>70</Text>
