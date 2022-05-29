@@ -25,7 +25,7 @@ const validationSchema = Yup.object({
 });
 
 const Post = ({ navigation }) => {
-  const { profile } = useLogin();
+  const { profile, setProfile } = useLogin();
   const userInfo = {
     text: '',
     userId: profile._id,
@@ -77,8 +77,10 @@ const Post = ({ navigation }) => {
         },
         body: JSON.stringify(userInfo),
       })
+      setProfile(profile);
       formikActions.resetForm();
       formikActions.setSubmitting(false);
+      
   };
 
   return (

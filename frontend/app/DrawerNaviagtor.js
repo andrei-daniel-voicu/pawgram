@@ -18,10 +18,10 @@ import ForeignUserProfile from './components/ForeignUserProfile'
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = (props, { navigation }) => {
-  const { profile } = useLogin();
+  const { profile, setIsLoggedIn } = useLogin();
   const { state, ...rest } = props;
   const newState = { ...state }  //copy from state before applying any filter. do not change original state
-  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'UserProfile', 'Example', 'ForeignProfile'].includes(item.name)) //replace "Login' with your route name
+  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'Example', 'ForeignProfile'].includes(item.name)) //replace "Login' with your route name
 
   return (
     <View style={{ flex: 1 }}>

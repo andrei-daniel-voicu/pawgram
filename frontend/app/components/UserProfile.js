@@ -36,11 +36,6 @@ const UserProfile = ({ navigation }) => {
                 setPosts(responseJson);
                 return responseJson;
             })
-            // .then((responseJson) => {
-            //     /setPosts(responseJson);
-            //     // console.log("Frate", posts)
-            //     // console.log("Primul", posts.length)
-            // })
             .catch((error) => {
                 console.error(error);
             });
@@ -81,7 +76,8 @@ const UserProfile = ({ navigation }) => {
             <View style={styles.mediaImageContainer}>
                 <Text
                 style={styles.itemStyle}
-                onPress={() => getItem(item)}>
+                // onPress={() => getItem(item)}
+                >
                 {item["text"]}
 
                 </Text>
@@ -117,7 +113,6 @@ const UserProfile = ({ navigation }) => {
         }
       }, [profile.patreonLink]);
     
-      console.log("Muie", posts.length)
     return (
     <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={true}>
