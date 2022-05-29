@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView } from 'react-native';
+// import { Box, FlatList } from "native-base";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useLogin } from '../context/LoginProvider';
 // import { PostView } from '../components/PostView'
@@ -23,43 +24,65 @@ const PostView = (props) => {
 
 const UserProfile = () => {
     const { profile } = useLogin();
-    // const [posts, setPosts] = useState("");
-    // let posts = [];
     const list = [];
-    const [posts, setData] = useState([]);
+    const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
   
-    const fetchData = async () => {
-        const resp = await fetch(`http://localhost:2345/get-all-posts/${profile._id}`, {
+    // const fetchData = async () => {
+    //     const resp = await fetch(`http://localhost:2345/get-all-posts/${profile._id}`, {
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json"}
+    //     });
+    //     const read = res.body
+    //         .pipeThrough(new TextDecoderStream())
+    //         .getReader();
+    //     let data1 = '';
+    //     while (true) {
+    //         const { value, done } = await read.read();
+    //         if (done) break;
+    //             data1 = value;
+    //     }
+    //     const data = JSON.parse(data1);
+    //     console.log(data);
+    //   //const data = await resp.json();
+    //     setData(data);
+    //     setLoading(false);
+    // };
+
+    useEffect(() => {
+        fetch(`http://localhost:2345/get-all-posts/${profile._id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"}
-        });
-        const read = res.body
-            .pipeThrough(new TextDecoderStream())
-            .getReader();
-        let data1 = '';
-        while (true) {
-            const { value, done } = await read.read();
-            if (done) break;
-                data1 = value;
-        }
-        const data = JSON.parse(data1);
-      //const data = await resp.json();
-        setData(data);
-        setLoading(false);
-    };
-
-    // console.log("De aici", posts);
-
-    useEffect(() => {
-        fetchData();
+        })
+            .then((response) => {
+                console.log ("Response", response)
+                return response.json()})
+            .then((responseJson) => {
+                setPosts(responseJson);
+               // setMasterDataSource(responseJson);
+               return responseJson;
+            //    console.log("Frate", responseJson)
+            //    console.log("Primul", posts.length)
+            })
+            .then((responseJson) => {
+                setPosts(responseJson);
+               // setMasterDataSource(responseJson);
+               console.log("Frate", posts)
+               console.log("Primul", posts.length)
+            })
+            .catch((error) => {
+                console.error(error);
+            });
       }, []);
-
+    
+    console.log("De aici", posts);
+    
     return (
     <SafeAreaView style={styles.container}>
-         <Box> Fetch API</Box>
-      {loading && <Box>Loading..</Box>}
+         {/* <Box> Fetch API</Box> */}
+      {/* {loading && <Box>Loading..</Box>} */}
       {/* {posts && ( */}
             <ScrollView showsVerticalScrollIndicator={true}>
                 <View style={{ alignSelf: "center" }}>
@@ -99,9 +122,9 @@ const UserProfile = () => {
                         {/* {posts["0"]} */}
                         <View style={styles.mediaImageContainer}>
                             <Image source={{uri: 
-                                // 'https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwMyUyRjAyJTJGMTE2NjIxN18xMTY2/MjE3X25hcy1jYWluZS1HZXR0eUltYWdl/cy04MzY3MTY3OTYuanBnJnc9NzgwJmg9/NDQwJmhhc2g9NDk5ZTg5Yzk4NzhlZjlmODhhN2NmOGE1Y2EzZGUyOTk=.thumb.jpg'
-                                 //posts ? undefined : 'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg'
-                                 posts["0"]["photoLink"]
+                                 'https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwMyUyRjAyJTJGMTE2NjIxN18xMTY2/MjE3X25hcy1jYWluZS1HZXR0eUltYWdl/cy04MzY3MTY3OTYuanBnJnc9NzgwJmg9/NDQwJmhhc2g9NDk5ZTg5Yzk4NzhlZjlmODhhN2NmOGE1Y2EzZGUyOTk=.thumb.jpg'
+                                // posts.length != 0 ? posts["0"].photoLink : 'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg'
+                                // posts["0"]["photoLink"]
                                 }} style={styles.image} resizeMode="cover"></Image>
                         </View>
                     </ScrollView>

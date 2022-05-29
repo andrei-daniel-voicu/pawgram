@@ -11,7 +11,8 @@ import Home from './components/Home';
 import Search from './components/Search';
 import UserProfile from './components/UserProfile';
 import Post from './components/Post';
-import AdoptForm from './components/AdoptForm'
+import AdoptForm from './components/AdoptForm';
+import Example from './components/Example';
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();
@@ -20,7 +21,7 @@ const CustomDrawer = (props, { navigation }) => {
   const { profile} = useLogin();
   const { state, ...rest } = props;
   const newState = { ...state}  //copy from state before applying any filter. do not change original state
-  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'UserProfile'].includes(item.name)) //replace "Login' with your route name
+  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'UserProfile', 'Example'].includes(item.name)) //replace "Login' with your route name
 
   return (
     <View style={{ flex: 1 }}>
@@ -93,6 +94,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen component={Search} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
       <Drawer.Screen component={AdoptForm} name='Adoption' />
+      <Drawer.Screen component={Example} name='Example' />
     </Drawer.Navigator>
   );
 };

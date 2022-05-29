@@ -18,6 +18,11 @@ const Home = ({ navigation }) => {
         title="Jump to Profile"
         onPress={() => navigation.dispatch(DrawerActions.jumpTo('Profile'))}
       />
+
+      <Button
+        title="Example"
+        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Example'))}
+      />
     </View>
   );
 };
