@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import * as React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { DrawerActions } from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -14,15 +15,15 @@ import AdoptForm from './components/AdoptForm'
 import AdoptList from './components/AdoptList'
 import AdoptView from './components/AdoptView'
 import { useLogin } from './context/LoginProvider';
-
+import ForeignUserProfile from './components/ForeignUserProfile'
 const Drawer = createDrawerNavigator();
 
-const CustomDrawer = props => {
-  // const { state, ...rest } = props;
-  // const newState = { ...state}
-  const { setIsLoggedIn, profile } = useLogin();
-  // const getVisible = item => item.name.contains(item.key, visibleItems);
-  // newState.routes = newState.routes.filter(getVisible, props)
+const CustomDrawer = (props, { navigation }) => {
+  const { profile, setIsLoggedIn } = useLogin();
+  const { state, ...rest } = props;
+  const newState = { ...state }  //copy from state before applying any filter. do not change original state
+  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'Example', 'ForeignProfile'].includes(item.name)) //replace "Login' with your route name
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -40,30 +41,20 @@ const CustomDrawer = props => {
             <Text>{profile.fullname}</Text>
             <Text>{profile.email}</Text>
           </View>
-          <Image
-            source={{
-              uri:
-                profile.avatar ||
-                'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
-            }}
-            style={{ width: 60, height: 60, borderRadius: 30 }}
-          />
+          {/* <TouchableOpacity style={styles.buttonGPlusStyle}
+            onPress={() => navigation.dispatch(DrawerActions.jumpTo('Profile'))}> */}
+            <Image
+              source={{
+                uri:
+                  profile.avatar ||
+                  'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
+              }}
+              style={{ width: 60, height: 60, borderRadius: 30 }}
+            />
+            
+          {/* </TouchableOpacity> */}
         </View>
-        <DrawerItemList {...props}/>
-         {/* state={newState} {...rest} */}
-          {/* <TouchableOpacity
-          style={{
-            position: 'absolute',
-            right: 0,
-            left: 0,
-            top: 10,
-            backgroundColor: '#f6f6f6',
-            padding: 20,
-          }}
-          onPress={() =>}
-        >
-          <Text>Add Post</Text>
-        </TouchableOpacity> */}
+        <DrawerItemList state={newState} {...rest}/>
       </DrawerContentScrollView>
       <TouchableOpacity
         style={{
@@ -82,7 +73,7 @@ const CustomDrawer = props => {
   );
 };
 
-const visibleItems = ['Home', 'Profile', 'Search'];
+const visibleItems = ['Home', 'Profile', 'SearchList'];
 
 
 const DrawerNavigator = () => {
@@ -93,9 +84,9 @@ const DrawerNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
           elevation: 0,
-          shadowOpacity: 0,
+          shadowOpacity: 0
         },
-        headerTitle: '',
+        headerTitle: 'Pawgram',
       }}
       drawerContent={props => <CustomDrawer {...props} />}
     >
@@ -106,11 +97,23 @@ const DrawerNavigator = () => {
       <Drawer.Screen component={AdoptForm} name='Add Adoption Request' />
       <Drawer.Screen component={AdoptList} name='AdoptList' />
       <Drawer.Screen component={AdoptView} name='AdoptView' />
+      <Drawer.Screen component={ForeignUserProfile} name='ForeignProfile' />
+
     </Drawer.Navigator>
   );
 };
 
-
-
+const styles = StyleSheet.create({
+  buttonGPlusStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#dc4e41',
+    borderWidth: 0.5,
+    borderColor: '#fff',
+    height: 40,
+    borderRadius: 5,
+    margin: 5,
+  }
+});
 
 export default DrawerNavigator;

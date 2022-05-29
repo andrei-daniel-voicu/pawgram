@@ -96,9 +96,9 @@ exports.userSignIn = async (req, res) => {
     avatar: user.avatar ? user.avatar : '',
     username: user.username,
     patreonLink: user.patreonLink,
-    // postList: user.postList,
-    // followingList: user.followingList,
-    // followersList: user.followersList,
+    //postList: user.postList,
+    //followingList: user.followingList,
+    //followersList: user.followersList,
     // adoptionList: user.adoptionList
   };
 
@@ -327,6 +327,48 @@ exports.getAdoptionList = async (req, res) => {
       });
 
       res.send(adoptions)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.getFollowers = async (req, res) => {
+  console.log("Aici")
+  const _id = req.params.id
+
+  try {
+      const user = await User.findById(_id)
+      if (!user) {
+          // console.log(post)
+          return res.status(404).send()
+      }
+      // console.log("User", user, user["adoptionRequestList"])
+      const followers = await User.find({
+          '_id': { $in: user["followersList"]}
+      });
+
+      res.send(followers)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.getFollowing = async (req, res) => {
+  console.log("Aici")
+  const _id = req.params.id
+
+  try {
+      const user = await User.findById(_id)
+      if (!user) {
+          // console.log(post)
+          return res.status(404).send()
+      }
+      // console.log("User", user, user["adoptionRequestList"])
+      const followers = await User.find({
+          '_id': { $in: user["followingList"]}
+      });
+
+      res.send(followers)
   } catch (e) {
       res.status(400).send(e)
   }

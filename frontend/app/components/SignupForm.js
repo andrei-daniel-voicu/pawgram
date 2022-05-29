@@ -19,7 +19,7 @@ const validationSchema = Yup.object({
     .min(3, 'Invalid name!')
     .required('Name is required!'),
   username: Yup.string()
-    .email('Invalid username!')
+    .min(5, 'Invalid username!')
     .required('Username is required!'),
   email: Yup.string()
     .email('Invalid email!')
@@ -94,8 +94,7 @@ const SignupForm = ({ navigation }) => {
         },
         body: JSON.stringify(values),
       })
-
-      // Promise.all([rest]).then(data => {  
+      
       if (rest.ok) {
         const read = rest.body
         .pipeThrough(new TextDecoderStream())
