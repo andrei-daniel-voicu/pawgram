@@ -78,8 +78,18 @@ const UserProfile = ({ navigation }) => {
     }, [profile]);
 
     const ItemView = ({ item }) => {
-        let icon_name = "thumbs-up-outline";
-
+        state = {
+            like: 'Unlike',
+            liked: false
+        }
+        selectLike = () => {
+            this.setState(prevstate => {
+                return {
+                    ...prevstate,
+                    like: (prevstate.liked ? 'Unlike' : 'like'), liked: !prevstate.liked
+                }
+            })
+        }
         return (
             <View style={styles.mediaImageContainer}>
                 <Text
@@ -91,6 +101,8 @@ const UserProfile = ({ navigation }) => {
                 </Text>
                 <TouchableOpacity style={styles.buttonGPlusStyle} onPress={async () => {
                     let found = false;
+                    console.log(icon_name);
+
                     for (let i = 0; i < item["likesList"].length; i++) {
                         if (item["likesList"][i] === profile._id) {
                             found = true;
@@ -110,13 +122,15 @@ const UserProfile = ({ navigation }) => {
                         })
                     }
                     else {
-                        icon_name = "thumbs-up";
+                        setIconName(true);
                     }
                     console.log(icon_name);
                 }}>
                     <View style={styles.likeButton}
                     >
-                        <Ionicons name={icon_name === "thumbs-up" ? "thumbs-up" : "thumbs-up-outline"} size={40} color="#DFD8C8"></Ionicons>
+                        {icon_name === true ? <Ionicons name="thumbs-up" size={40} color="#DFD8C8"></Ionicons>
+                            : <Ionicons name="thumbs-up-outline" size={40} color="#DFD8C8"></Ionicons>}
+
                     </View>
                 </TouchableOpacity>
 
