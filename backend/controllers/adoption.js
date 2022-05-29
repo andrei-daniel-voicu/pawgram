@@ -8,6 +8,16 @@ exports.createAdoption = async (req, res) => {
     try {
         console.log("Ok", adoption)
         await adoption.save()
+
+        const user = await User.updateOne(
+            { _id: req.params.id},
+            {"$push": { "adoptionRequestList": adoption._id } }
+            ).exec();
+
+        
+        if (!user) {
+            return res.status(404).send()
+        }
         res.status(201).send(adoption)
     } catch (e) {
         res.status(400).send(e)

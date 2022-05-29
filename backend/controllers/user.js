@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Adoption = require('../models/adoption');
 const sharp = require('sharp');
 const cloudinary = require('../helper/imageUpload');
 
@@ -304,6 +305,28 @@ exports.addAdoption = async (req, res) => {
       }
 
       res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.getAdoptionList = async (req, res) => {
+  console.log("Aici")
+  const _id = req.params.id
+
+  try {
+      const user = await User.findById(_id)
+      if (!user) {
+          // console.log(post)
+          return res.status(404).send()
+      }
+  
+      // console.log("User", user, user["adoptionRequestList"])
+      const adoptions = await Adoption.find({
+          '_id': { $in: user["adoptionRequestList"]}
+      });
+
+      res.send(adoptions)
   } catch (e) {
       res.status(400).send(e)
   }

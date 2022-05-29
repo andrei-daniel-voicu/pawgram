@@ -1,54 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView } from 'react-native';
-// import { Box, FlatList } from "native-base";
+import {
+    View, 
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    SafeAreaView,
+    Image,
+    ScrollView,
+    FlatList
+ } from 'react-native';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useLogin } from '../context/LoginProvider';
+import { DrawerActions } from '@react-navigation/native';
+
 // import { PostView } from '../components/PostView'
 
-const PostView = (props) => {
-    // const { setIsLoggedIn, profile } = useLogin();
-    
-    // const posts = GetUserPosts();
-    console.log("ce naiba", props.photo)
-    
-    return (
-        <View style={styles.mediaImageContainer}>
-            <Image source={{uri:'https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwMyUyRjAyJTJGMTE2NjIxN18xMTY2/MjE3X25hcy1jYWluZS1HZXR0eUltYWdl/cy04MzY3MTY3OTYuanBnJnc9NzgwJmg9/NDQwJmhhc2g9NDk5ZTg5Yzk4NzhlZjlmODhhN2NmOGE1Y2EzZGUyOTk=.thumb.jpg'}} 
-            // style={styles.image} 
-            // resizeMode="cover"
-            ></Image>
-        </View>
-  );
-};
-
-
-const UserProfile = () => {
+const UserProfile = ({ navigation }) => {
     const { profile } = useLogin();
-    const list = [];
     const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-  
-    // const fetchData = async () => {
-    //     const resp = await fetch(`http://localhost:2345/get-all-posts/${profile._id}`, {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-Type": "application/json"}
-    //     });
-    //     const read = res.body
-    //         .pipeThrough(new TextDecoderStream())
-    //         .getReader();
-    //     let data1 = '';
-    //     while (true) {
-    //         const { value, done } = await read.read();
-    //         if (done) break;
-    //             data1 = value;
-    //     }
-    //     const data = JSON.parse(data1);
-    //     console.log(data);
-    //   //const data = await resp.json();
-    //     setData(data);
-    //     setLoading(false);
-    // };
 
     useEffect(() => {
         fetch(`http://localhost:2345/get-all-posts/${profile._id}`, {
@@ -61,29 +30,49 @@ const UserProfile = () => {
                 return response.json()})
             .then((responseJson) => {
                 setPosts(responseJson);
-               // setMasterDataSource(responseJson);
-               return responseJson;
-            //    console.log("Frate", responseJson)
-            //    console.log("Primul", posts.length)
+                return responseJson;
             })
             .then((responseJson) => {
                 setPosts(responseJson);
-               // setMasterDataSource(responseJson);
-               console.log("Frate", posts)
-               console.log("Primul", posts.length)
+                console.log("Frate", posts)
+                console.log("Primul", posts.length)
             })
             .catch((error) => {
                 console.error(error);
             });
       }, []);
     
-    console.log("De aici", posts);
+    const ItemView = ({item}) => {
+        return (
+            <View style={styles.mediaImageContainer}>
+                <Text
+                style={styles.itemStyle}
+                onPress={() => getItem(item)}>
+                {item["text"]}
+
+                </Text>
+                <Image source={ 
+                    item["photoLink"]}
+                    style={styles.image} resizeMode="cover"></Image>
+            </View>
+        );
+      };
+     
+      const ItemSeparatorView = () => {
+        return (
+          // Flat List Item Separator
+          <View
+            style={{
+              height: 1,
+              width: '100%',
+              backgroundColor: '#C8C8C8',
+            }}
+          />
+        );
+      };
     
     return (
     <SafeAreaView style={styles.container}>
-         {/* <Box> Fetch API</Box> */}
-      {/* {loading && <Box>Loading..</Box>} */}
-      {/* {posts && ( */}
             <ScrollView showsVerticalScrollIndicator={true}>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
@@ -102,31 +91,37 @@ const UserProfile = () => {
                 </View>
 
                 <View style={{  alignSelf: "center", marginTop: 16 }}>
-                    <View style={styles.add}>
-                        <Ionicons name="ios-add" size={40} color="#DFD8C8"></Ionicons>
-                    </View>
+                    <TouchableOpacity style={styles.buttonGPlusStyle}
+                        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Post'))}>
+                        <View style={styles.add}>
+                            <Ionicons name="ios-add" size={40} color="#DFD8C8"></Ionicons>
+                        </View>
+                    </TouchableOpacity>
                     <View style={styles.chat}>
                         <MaterialIcons name="chat" size={40} color="#DFD8C8"></MaterialIcons>
                     </View>
-                    <View style={styles.donate}>
-                        <Ionicons name="cash-outline" size={40} color="#DFD8C8"></Ionicons>
-                    </View>
-                    <View style={styles.adopt}>
-                        <Ionicons name="clipboard-outline" size={40} color="#DFD8C8"></Ionicons>
-                    </View>
+                    <TouchableOpacity style={styles.buttonGPlusStyle}
+                        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Adoption'))}></TouchableOpacity>
+                        <View style={styles.donate}>
+                            <Ionicons name="cash-outline" size={40} color="#DFD8C8"></Ionicons>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonGPlusStyle}
+                        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Adoption'))}>
+                        <View style={styles.adopt}>
+                            <Ionicons name="clipboard-outline" size={40} color="#DFD8C8"></Ionicons>
+                        </View>
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ marginTop: 80 }}>
                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                        {/* <View>{list["0"]}</View> */}
-                        {/* {posts["0"]} */}
-                        <View style={styles.mediaImageContainer}>
-                            <Image source={{uri: 
-                                 'https://s.iw.ro/gateway/g/ZmlsZVNvdXJjZT1odHRwJTNBJTJGJTJG/c3RvcmFnZTA2dHJhbnNjb2Rlci5yY3Mt/cmRzLnJvJTJGc3RvcmFnZSUyRjIwMjAl/MkYwMyUyRjAyJTJGMTE2NjIxN18xMTY2/MjE3X25hcy1jYWluZS1HZXR0eUltYWdl/cy04MzY3MTY3OTYuanBnJnc9NzgwJmg9/NDQwJmhhc2g9NDk5ZTg5Yzk4NzhlZjlmODhhN2NmOGE1Y2EzZGUyOTk=.thumb.jpg'
-                                // posts.length != 0 ? posts["0"].photoLink : 'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg'
-                                // posts["0"]["photoLink"]
-                                }} style={styles.image} resizeMode="cover"></Image>
-                        </View>
+                        <FlatList
+                            data={posts}
+                            keyExtractor={(item, index) => index.toString()}
+                            ItemSeparatorComponent={ItemSeparatorView}
+                            renderItem={ItemView}
+                        />
                     </ScrollView>
                 </View>
 

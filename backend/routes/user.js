@@ -14,7 +14,8 @@ const {
   addAdoption,
   addNotification,
   getAllUsers,
-  getUser
+  getUser,
+  getAdoptionList
 } = require('../controllers/user');
 
 const { isAuth } = require('../middlewares/auth');
@@ -61,6 +62,7 @@ router.post('/add-following/:id', addFollowing);
 router.patch('/delete-following/:id');
 
 router.post('/add-adoption/:id', addAdoption);
+router.get('/get-adoption-list/:id', getAdoptionList);
 router.patch('/delete-all-adoption/:id');
 
 router.post('/add-notification/:id', addNotification);
