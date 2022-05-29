@@ -13,6 +13,7 @@ import UserProfile from './components/UserProfile';
 import Post from './components/Post';
 import AdoptForm from './components/AdoptForm';
 import Example from './components/Example';
+import ForeignUserProfile from './components/ForeignUserProfile'
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();
@@ -91,6 +92,7 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen component={Home} name='Home' />
       <Drawer.Screen component={UserProfile} name='Profile' />
+      <Drawer.Screen component={ForeignUserProfile} name='ForeignProfile' />
       <Drawer.Screen component={SearchList} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
       <Drawer.Screen component={AdoptForm} name='Adoption' />

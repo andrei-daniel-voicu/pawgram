@@ -165,8 +165,7 @@ const SearchList = ({ navigation }) => {
 
     // Function for click on an item
 
-    alert('Id : ' + item.id + ' Title : ' + item['username']);
-    navigation.dispatch(DrawerActions.jumpTo('Profile'));
+    navigation.dispatch(DrawerActions.jumpTo('ForeignProfile'));
   };
 
 
