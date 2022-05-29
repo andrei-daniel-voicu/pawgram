@@ -30,7 +30,7 @@ import {
 
  
 
-const AdoptList = ({navigation}) => {
+const AdoptList = ({route, navigation}) => {
 
   const { setIsLoggedIn, profile } = useLogin();
 
@@ -60,7 +60,7 @@ const AdoptList = ({navigation}) => {
 
       });
 
-  }, []);
+  }, [route?.params]);
 
  
 

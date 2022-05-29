@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { Button, View, SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 
-const AdoptView = ({route}, {navigation}) => {
+
+const AdoptView = ({route, navigation}) => {
 
   const [adopt, setAdopt] = useState("");
 
@@ -25,6 +26,51 @@ const AdoptView = ({route}, {navigation}) => {
 
       });
     }, [route])
+
+  
+     const accept_adoption = async() => {
+  
+        console.log("inainte fetch\n", route.params.id,  adopt['animalId']);
+            try {
+                const res = await fetch(`http://localhost:2345/delete-adoption/${route.params.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                  body: JSON.stringify({
+                    id: adopt['animalId'],
+                  })
+                });
+                console.log("dupa fetch\n");
+
+            } catch (e) {
+                console.log(e);
+            }
+        
+      navigation.dispatch(DrawerActions.jumpTo('AdoptList', { id: adopt['animalId'] }));
+  
+    };
+
+    const reject_adoption = async() => {
+
+        try {
+            const res = await fetch(`http://localhost:2345/delete-adoption/${route.params.id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+              body: JSON.stringify({
+                id: adopt['animalId'],
+              })
+            });
+
+        } catch (e) {
+            console.log(e);
+        }
+
+    navigation.dispatch(DrawerActions.jumpTo('AdoptList', { id: adopt['animalId'] }));
+
+    };
 
   return (
     <SafeAreaView>
@@ -56,12 +102,12 @@ const AdoptView = ({route}, {navigation}) => {
         <Button
           color="#25d622"
           title="Accept"
-          onPress={() => navigation.dispatch(DrawerActions.jumpTo('AdoptList'))}
+          onPress={() => accept_adoption()}
         />
         <Button
           color="#f01e13"
           title="Reject"
-          onPress={() => navigation.dispatch(DrawerActions.jumpTo('AdoptList'))}
+          onPress={() => reject_adoption()}
         />
       </View>
 
