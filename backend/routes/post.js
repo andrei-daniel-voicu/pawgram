@@ -13,7 +13,8 @@ const {
   addLike,
   deleteLike,
   likeComment,
-  unlikeComment
+  unlikeComment,
+  getPostsFollowing
 } = require('../controllers/post');
 
 const multer = require('multer');
@@ -32,6 +33,7 @@ const uploads = multer({ storage, fileFilter });
 router.post('/create-post/:id', createPost);
 router.get('/get-post/:id', getPostById);
 router.get('/get-all-posts/:id', getPostsUser);
+router.post('/get-all-posts-following', getPostsFollowing);
 router.patch('/edit-post/:id', editPost);
 router.delete('/delete-post/:id', deletePost);
 

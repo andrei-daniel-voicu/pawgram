@@ -50,6 +50,25 @@ exports.getPostsUser = async (req, res) => {
     }
 };
 
+exports.getPostsFollowing = async (req, res) => {
+    const users = req.body
+    const idsArr = users.map((x) => x["postList"])
+    const ids = [].concat.apply([], idsArr);
+    try {
+        const posts = await Post.find({
+            '_id': { $in: ids}
+        });
+        if (posts.length === 0) {
+            return res.status(404).send()
+        }
+        const post = posts.sort((a, b) =>
+          a.date > b.date ? 1 : -1);
+        res.send(post)
+    } catch (e) {
+        res.status(500).send()
+    }
+};
+
 exports.getPostById = async (req, res) => {
     const _id = req.params.id
 
