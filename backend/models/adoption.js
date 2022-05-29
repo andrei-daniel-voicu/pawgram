@@ -33,9 +33,13 @@ const adoptionRequestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  message: {
+    type: String,
+    // required: true
+  },
   approve: {
     type: Boolean,
-    required: true,
+    // required: true,
   }
 });
 

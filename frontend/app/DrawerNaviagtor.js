@@ -10,12 +10,17 @@ import Home from './components/Home';
 import Search from './components/Search';
 import UserProfile from './components/UserProfile';
 import Post from './components/Post';
+import AdoptForm from './components/AdoptForm'
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = props => {
+  // const { state, ...rest } = props;
+  // const newState = { ...state}
   const { setIsLoggedIn, profile } = useLogin();
+  // const getVisible = item => item.name.contains(item.key, visibleItems);
+  // newState.routes = newState.routes.filter(getVisible, props)
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -42,7 +47,8 @@ const CustomDrawer = props => {
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
         </View>
-        <DrawerItemList {...props} />
+        <DrawerItemList {...props}/>
+         {/* state={newState} {...rest} */}
           {/* <TouchableOpacity
           style={{
             position: 'absolute',
@@ -74,6 +80,9 @@ const CustomDrawer = props => {
   );
 };
 
+const visibleItems = ['Home', 'Profile', 'Search'];
+
+
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
@@ -92,6 +101,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen component={UserProfile} name='Profile' />
       <Drawer.Screen component={Search} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
+      <Drawer.Screen component={AdoptForm} name='Add Adoption Request' />
     </Drawer.Navigator>
   );
 };

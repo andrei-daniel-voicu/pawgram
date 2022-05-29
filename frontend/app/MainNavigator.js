@@ -15,6 +15,7 @@ const StackNavigator = () => {
       <Stack.Screen component={AppForm} name='AppForm' />
       <Stack.Screen component={ImageUpload} name='ImageUpload' />
       <Stack.Screen component={UserProfile} name='UserProfile' />
+      
     </Stack.Navigator>
   );
 };

@@ -3,10 +3,16 @@ import { View, StyleSheet, Text } from 'react-native';
 
 import Post from './Post';
 
-const Home = () => {
+const Home = ({ navigation: { navigate } }) => {
   return (
     <View style={styles.container}>
       <Text>Home</Text>
+      {/* <Button
+        onPress={() =>
+          navigate('Profile', { names: ['Brent', 'Satya', 'Michaś'] })
+        }
+        title="Create Post"
+      /> */}
     </View>
   );
 };

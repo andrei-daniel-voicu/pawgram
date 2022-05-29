@@ -83,13 +83,13 @@ const UserProfile = () => {
     console.log("De aici", posts);
     return (
     <SafeAreaView style={styles.container}>
-            <Button
+            {/* <Button
                 title="Go somewhere"
                 onPress={() => {
                     // Navigate using the `navigation` prop that you received
                     navigation.navigate('SomeScreen');
                 }}
-            />
+            /> */}
             <ScrollView showsVerticalScrollIndicator={true}>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>

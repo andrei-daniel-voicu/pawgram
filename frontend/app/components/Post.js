@@ -14,23 +14,30 @@ import * as Yup from 'yup';
 import client from '../api/client';
 
 const validationSchema = Yup.object({
-  url: Yup.string()
+  text: Yup.string()
+    .trim()
+    .min(3, 'Invalid text!')
+    .required('Text is required!'),
+  photoLink: Yup.string()
     .trim()
     .min(3, 'Invalid url!')
-    .required('URL is required!'),
+    .required('URL is required!')
 });
 
 const Post = ({ navigation }) => {
-  const { setIsLoggedIn, setProfile } = useLogin();
+  const { profile } = useLogin();
   const userInfo = {
-    url: '',
-    caption: '',
+    text: '',
+    userId: profile._id,
+    photoLink: '',
+    commentList: [],
+    likesList: [],
     date: new Date(),
   };
 
   const [error, setError] = useState('');
 
-  const { url, caption } = userInfo;
+  const { text, photoLink } = userInfo;
 
   const handleOnChangeText = (value, fieldName) => {
     setUserInfo({ ...userInfo, [fieldName]: value });
@@ -43,8 +50,10 @@ const Post = ({ navigation }) => {
     if (!isValidObjField(userInfo))
       return updateError('Required all fields!', setError);
     // if valid url with 3 or more characters
-    if (!url.trim() || url.length < 3)
-      return updateError('Invalid url!', setError);
+    if (!text.trim() || text.length < 3)
+      return updateError('Invalid text!', setError);
+    if (!photoLink.trim() || photoLink.length < 3)
+      return updateError('Invalid photo link!', setError);
 
     return true;
   };
@@ -53,17 +62,23 @@ const Post = ({ navigation }) => {
     if (isValidForm()) {
       // submit form
       console.log(userInfo);
+      return true;
     }
   };
 
-  const post = async (values, formikActions) => {    
+  const postIt = async (values, formikActions) => {
+      userInfo.text = values.text;
+      userInfo.photoLink = values.photoLink;
+      console.log("UserInfo", userInfo)
       const rest = await fetch(`http://localhost:2345/create-post/${profile._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(userInfo),
       })
+      formikActions.resetForm();
+      formikActions.setSubmitting(false);
   };
 
   return (
@@ -71,7 +86,7 @@ const Post = ({ navigation }) => {
       <Formik
         initialValues={userInfo}
         validationSchema={validationSchema}
-        onSubmit={post}
+        onSubmit={postIt}
       >
         {({
           values,
@@ -82,25 +97,25 @@ const Post = ({ navigation }) => {
           handleBlur,
           handleSubmit,
         }) => {
-          const { url, caption } = values;
+          const {text, photoLink} = values;
           return (
             <>
               <FormInput
-                value={url}
-                error={touched.url && errors.url}
-                onChangeText={handleChange('url')}
-                onBlur={handleBlur('url')}
-                label='URL'
-                placeholder='http://photo.jpg'
+                value={text}
+                error={touched.text && errors.text}
+                onChangeText={handleChange('text')}
+                onBlur={handleBlur('text')}
+                label='Text'
+                placeholder='Say something'
               />
               <FormInput
-                value={caption}
-                error={touched.caption && errors.caption}
-                onChangeText={handleChange('caption')}
-                onBlur={handleBlur('caption')}
+                value={photoLink}
+                error={touched.photoLink && errors.photoLink}
+                onChangeText={handleChange('photoLink')}
+                onBlur={handleBlur('photoLink')}
                 autoCapitalize='none'
-                label='Caption'
-                placeholder='What a lovely picture!'
+                label='Photo'
+                placeholder='Add a picture'
               />
               <FormSubmitButton
                 submitting={isSubmitting}

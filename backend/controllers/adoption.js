@@ -6,11 +6,10 @@ const cloudinary = require('../helper/imageUpload');
 exports.createAdoption = async (req, res) => {
     const adoption = new Adoption(req.body)
     try {
-        console.log(req.body)
+        console.log("Ok", adoption)
         await adoption.save()
-        res.status(201).send(post)
+        res.status(201).send(adoption)
     } catch (e) {
-        console.log(res.body)
         res.status(400).send(e)
     }
 };
