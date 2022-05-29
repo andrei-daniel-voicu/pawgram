@@ -8,7 +8,7 @@ import {
 } from '@react-navigation/drawer';
 
 import Home from './components/Home';
-import Search from './components/Search';
+import SearchList from './components/SearchList';
 import UserProfile from './components/UserProfile';
 import Post from './components/Post';
 import AdoptForm from './components/AdoptForm';
@@ -18,9 +18,9 @@ import { useLogin } from './context/LoginProvider';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = (props, { navigation }) => {
-  const { profile} = useLogin();
+  const { profile } = useLogin();
   const { state, ...rest } = props;
-  const newState = { ...state}  //copy from state before applying any filter. do not change original state
+  const newState = { ...state }  //copy from state before applying any filter. do not change original state
   newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'UserProfile', 'Example'].includes(item.name)) //replace "Login' with your route name
 
   return (
@@ -42,18 +42,18 @@ const CustomDrawer = (props, { navigation }) => {
           </View>
           {/* <TouchableOpacity style={styles.buttonGPlusStyle}
             onPress={() => navigation.dispatch(DrawerActions.jumpTo('Profile'))}> */}
-            <Image
-              source={{
-                uri:
-                  profile.avatar ||
-                  'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
-              }}
-              style={{ width: 60, height: 60, borderRadius: 30 }}
-            />
-            
+          <Image
+            source={{
+              uri:
+                profile.avatar ||
+                'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
+            }}
+            style={{ width: 60, height: 60, borderRadius: 30 }}
+          />
+
           {/* </TouchableOpacity> */}
         </View>
-        <DrawerItemList state={newState} {...rest}/>
+        <DrawerItemList state={newState} {...rest} />
       </DrawerContentScrollView>
       <TouchableOpacity
         style={{
@@ -72,7 +72,7 @@ const CustomDrawer = (props, { navigation }) => {
   );
 };
 
-const visibleItems = ['Home', 'Profile', 'Search'];
+const visibleItems = ['Home', 'Profile', 'SearchList'];
 
 
 const DrawerNavigator = () => {
@@ -91,7 +91,7 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen component={Home} name='Home' />
       <Drawer.Screen component={UserProfile} name='Profile' />
-      <Drawer.Screen component={Search} name='Search' />
+      <Drawer.Screen component={SearchList} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
       <Drawer.Screen component={AdoptForm} name='Adoption' />
       <Drawer.Screen component={Example} name='Example' />

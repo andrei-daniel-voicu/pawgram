@@ -2,14 +2,14 @@
 
 // https://aboutreact.com/react-native-search-bar-filter-on-listview/
 
- 
+
 
 // import React in our code
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
- 
-
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { createNativeNavigator } from '@react-navigation/drawer';
 // import all the components we are going to use
 
 import {
@@ -28,16 +28,15 @@ import {
 
 } from 'react-native';
 
- 
 
-const SearchList = () => {
+
+const SearchList = ({ navigation }) => {
 
   const [search, setSearch] = useState('');
 
   const [filteredDataSource, setFilteredDataSource] = useState([]);
 
   const [masterDataSource, setMasterDataSource] = useState([]);
-
   useEffect(() => {
 
     fetch('http://localhost:2345/get-all-users')
@@ -45,7 +44,7 @@ const SearchList = () => {
       .then((response) => response.json())
 
       .then((responseJson) => {
-
+        console.log(responseJson);
         setFilteredDataSource(responseJson);
 
         setMasterDataSource(responseJson);
@@ -60,7 +59,7 @@ const SearchList = () => {
 
   }, []);
 
- 
+
 
   const searchFilterFunction = (text) => {
 
@@ -88,7 +87,7 @@ const SearchList = () => {
 
           return itemData.indexOf(textData) > -1;
 
-      });
+        });
 
       setFilteredDataSource(newData);
 
@@ -108,9 +107,9 @@ const SearchList = () => {
 
   };
 
- 
 
-  const ItemView = ({item}) => {
+
+  const ItemView = ({ item }) => {
 
     return (
 
@@ -134,7 +133,7 @@ const SearchList = () => {
 
   };
 
- 
+
 
   const ItemSeparatorView = () => {
 
@@ -160,21 +159,21 @@ const SearchList = () => {
 
   };
 
- 
+
 
   const getItem = (item) => {
 
     // Function for click on an item
 
     alert('Id : ' + item.id + ' Title : ' + item['username']);
-
+    navigation.dispatch(DrawerActions.jumpTo('Profile'));
   };
 
- 
+
 
   return (
 
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
 
       <View style={styles.container}>
 
@@ -212,7 +211,7 @@ const SearchList = () => {
 
 };
 
- 
+
 
 const styles = StyleSheet.create({
 
@@ -246,6 +245,6 @@ const styles = StyleSheet.create({
 
 });
 
- 
+
 
 export default SearchList;
