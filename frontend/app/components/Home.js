@@ -1,18 +1,28 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+// import React from 'react';
+import * as React from 'react';
+import { Button, View, StyleSheet, Text } from 'react-native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { createNativeNavigator } from '@react-navigation/drawer';
 
 import Post from './Post';
 
-const Home = ({ navigation: { navigate } }) => {
+const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Home</Text>
-      {/* <Button
-        onPress={() =>
-          navigate('Profile', { names: ['Brent', 'Satya', 'Michaś'] })
-        }
+      <Button
         title="Create Post"
-      /> */}
+        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Post'))}
+      />
+      <Button
+        title="Jump to Profile"
+        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Profile'))}
+      />
+
+      <Button
+        title="Example"
+        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Example'))}
+      />
     </View>
   );
 };

@@ -7,8 +7,8 @@
 // import React in our code
 
 import React, {useState, useEffect} from 'react';
-
- 
+import { useLogin } from '../context/LoginProvider';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 
 // import all the components we are going to use
 
@@ -30,7 +30,9 @@ import {
 
  
 
-const SearchList = () => {
+const AdoptList = () => {
+
+  const { setIsLoggedIn, profile } = useLogin();
 
   const [search, setSearch] = useState('');
 
@@ -40,7 +42,7 @@ const SearchList = () => {
 
   useEffect(() => {
 
-    fetch('http://localhost:2345/get-all-users')
+    fetch(`http://localhost:2345/get-adoption-list/${profile._id}`)
 
       .then((response) => response.json())
 
@@ -62,7 +64,7 @@ const SearchList = () => {
 
  
 
-  const searchFilterFunction = (text) => {
+  const adoptionFilter = (text) => {
 
     // Check if searched text is not blank
 
@@ -78,9 +80,9 @@ const SearchList = () => {
 
         function (item) {
 
-          const itemData = item['username']
+          const itemData = item['_id']
 
-            ? item['username'].toUpperCase()
+            ? item['_id'].toUpperCase()
 
             : ''.toUpperCase();
 
@@ -122,7 +124,12 @@ const SearchList = () => {
 
         onPress={() => getItem(item)}>
 
-        {item['username'].toUpperCase()}
+
+        {item['firstName'].toUpperCase()}
+
+        {' '}
+
+        {item['lastName'].toUpperCase()}
 
       </Text>
 
@@ -162,7 +169,7 @@ const SearchList = () => {
 
     // Function for click on an item
 
-    alert('Id : ' + item.id + ' Title : ' + item['username']);
+    navigation.dispatch(DrawerActions.jumpTo('AdoptView', item));
 
   };
 
@@ -173,20 +180,6 @@ const SearchList = () => {
     <SafeAreaView style={{flex: 1}}>
 
       <View style={styles.container}>
-
-        <TextInput
-
-          style={styles.textInputStyle}
-
-          onChangeText={(text) => searchFilterFunction(text)}
-
-          value={search}
-
-          underlineColorAndroid="transparent"
-
-          placeholder="Search Here"
-
-        />
 
         <FlatList
 
@@ -244,4 +237,4 @@ const styles = StyleSheet.create({
 
  
 
-export default SearchList;
+export default AdoptList;

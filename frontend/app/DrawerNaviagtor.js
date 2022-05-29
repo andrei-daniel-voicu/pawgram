@@ -11,6 +11,8 @@ import SearchList from './components/SearchList';
 import UserProfile from './components/UserProfile';
 import Post from './components/Post';
 import AdoptForm from './components/AdoptForm'
+import AdoptList from './components/AdoptList'
+import AdoptView from './components/AdoptView'
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();
@@ -99,9 +101,11 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen component={Home} name='Home' />
       <Drawer.Screen component={UserProfile} name='Profile' />
-      <Drawer.Screen component={SearchList} name='SearchList' />
+      <Drawer.Screen component={SearchList} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
       <Drawer.Screen component={AdoptForm} name='Add Adoption Request' />
+      <Drawer.Screen component={AdoptList} name='Adopt List' />
+      <Drawer.Screen component={AdoptView} name='Adopt View' />
     </Drawer.Navigator>
   );
 };
