@@ -86,57 +86,8 @@ const AdoptForm = ({ navigation }) => {
         body: JSON.stringify(values),
       })
 
-    // try {
-    //   if (rest.ok) {
-    //     const read = rest.body
-    //     .pipeThrough(new TextDecoderStream())
-    //     .getReader();
-    //     let data1 = '';
-    //     while (true) {
-    //       const { value, done } = await read.read();
-    //       if (done) break;
-    //       data1 = value;
-    //     }
-    //     const resu = JSON.parse(data1);
-    //     const res = await fetch('http://localhost:2345/sign-in', {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         address: resu["user"]["address"],
-    //         phone: values.phone
-    //       })
-    //      })
- 
-    //     const reader = res.body
-    //     .pipeThrough(new TextDecoderStream())
-    //     .getReader();
-    //     let data = '';
-    //     while (true) {
-    //       const { value, done } = await reader.read();
-    //       if (done) break;
-    //       data = value;
-    //     }
-    //     const result = JSON.parse(data);   
-    //     console.log("Result", result)  
-    //     if (result.success) {
-    //       navigation.dispatch(
-    //         StackActions.replace('ImageUpload', {
-    //           token: result.token
-    //         })
-    //       );
-    //       formikActions.resetForm();
-    //       setProfile(result.user);
-    //       setIsLoggedIn(true);
-    //     }
-    //   } else { console.log ("Nu e succes") }
-
       formikActions.resetForm();
-      formikActions.setSubmitting(false); 
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      formikActions.setSubmitting(false);
   };
 
   return (

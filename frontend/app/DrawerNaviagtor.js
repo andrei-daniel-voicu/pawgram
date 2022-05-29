@@ -83,9 +83,9 @@ const DrawerNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
           elevation: 0,
-          shadowOpacity: 0,
+          shadowOpacity: 0
         },
-        headerTitle: '',
+        headerTitle: 'Pawgram',
       }}
       drawerContent={props => <CustomDrawer {...props} />}
     >
