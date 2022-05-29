@@ -18,9 +18,6 @@ const postSchema = new mongoose.Schema({
   photoLink: {
     type: String,
   },
-  videoLink: {
-    type: String
-  },
   commentList: [{ type: Object }],
   likesList: 
     [{ 

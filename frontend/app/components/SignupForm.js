@@ -18,7 +18,12 @@ const validationSchema = Yup.object({
     .trim()
     .min(3, 'Invalid name!')
     .required('Name is required!'),
-  email: Yup.string().email('Invalid email!').required('Email is required!'),
+  username: Yup.string()
+    .email('Invalid username!')
+    .required('Username is required!'),
+  email: Yup.string()
+    .email('Invalid email!')
+    .required('Email is required!'),
   password: Yup.string()
     .trim()
     .min(8, 'Password is too short!')
@@ -80,7 +85,8 @@ const SignupForm = ({ navigation }) => {
     }
   };
 
-  const signUp = async (values, formikActions) => {    
+  const signUp = async (values, formikActions) => {
+    try {   
       const rest = await fetch('http://localhost:2345/create-user', {
         method: "POST",
         headers: {
@@ -89,7 +95,7 @@ const SignupForm = ({ navigation }) => {
         body: JSON.stringify(values),
       })
 
-    try {
+      // Promise.all([rest]).then(data => {  
       if (rest.ok) {
         const read = rest.body
         .pipeThrough(new TextDecoderStream())
@@ -136,9 +142,11 @@ const SignupForm = ({ navigation }) => {
       } else { console.log ("Nu e succes") }
 
       formikActions.resetForm();
-      // formikActions.setSubmitting(false); 
+      formikActions.setSubmitting(false);
+    // });
       } catch (e) {
         console.log(e);
+
       }
   };
 

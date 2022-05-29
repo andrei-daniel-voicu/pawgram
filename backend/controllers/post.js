@@ -5,11 +5,22 @@ const sharp = require('sharp');
 const cloudinary = require('../helper/imageUpload');
 
 exports.createPost = async (req, res) => {
-    const _id = req.params.id
+    // const _id = req.params.id
+    console.log("Aici")
     const post = new Post(req.body)
     try {
-        console.log(req.body)
+        // console.log(req.body)
         await post.save()
+        const user = await User.updateOne(
+            { _id: req.params.id},
+            {"$push": { "postList": post._id } }
+            ).exec();
+
+        
+        if (!user) {
+            return res.status(404).send()
+        }
+      
         res.status(201).send(post)
     } catch (e) {
         console.log(res.body)

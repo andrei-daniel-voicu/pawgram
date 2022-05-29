@@ -59,9 +59,17 @@ exports.userSignIn = async (req, res) => {
   });
 
   const userInfo = {
+    _id : user._id,
+    type: user.type,
     fullname: user.fullname,
     email: user.email,
     avatar: user.avatar ? user.avatar : '',
+    username: user.username,
+    patreonLink: user.patreonLink,
+    // postList: user.postList,
+    // followingList: user.followingList,
+    // followersList: user.followersList,
+    // adoptionList: user.adoptionList
   };
 
   res.json({ success: true, user: userInfo, token});

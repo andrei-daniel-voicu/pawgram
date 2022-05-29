@@ -61,6 +61,7 @@ const LoginForm = () => {
         if (result.success) {
           setUserInfo({ email: '', password: '' });
           setProfile(result.user);
+          // console.log("Profile ")
           setIsLoggedIn(true);
         }
 

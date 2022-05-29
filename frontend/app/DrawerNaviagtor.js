@@ -7,13 +7,20 @@ import {
 } from '@react-navigation/drawer';
 
 import Home from './components/Home';
-import Tasks from './components/Tasks';
+import Search from './components/Search';
+import UserProfile from './components/UserProfile';
+import Post from './components/Post';
+import AdoptForm from './components/AdoptForm'
 import { useLogin } from './context/LoginProvider';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = props => {
+  // const { state, ...rest } = props;
+  // const newState = { ...state}
   const { setIsLoggedIn, profile } = useLogin();
+  // const getVisible = item => item.name.contains(item.key, visibleItems);
+  // newState.routes = newState.routes.filter(getVisible, props)
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -35,12 +42,26 @@ const CustomDrawer = props => {
             source={{
               uri:
                 profile.avatar ||
-                'https://images.unsplash.com/photo-1624243225303-261cc3cd2fbc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
+                'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
             }}
             style={{ width: 60, height: 60, borderRadius: 30 }}
           />
         </View>
-        <DrawerItemList {...props} />
+        <DrawerItemList {...props}/>
+         {/* state={newState} {...rest} */}
+          {/* <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 0,
+            left: 0,
+            top: 10,
+            backgroundColor: '#f6f6f6',
+            padding: 20,
+          }}
+          onPress={() =>}
+        >
+          <Text>Add Post</Text>
+        </TouchableOpacity> */}
       </DrawerContentScrollView>
       <TouchableOpacity
         style={{
@@ -59,6 +80,9 @@ const CustomDrawer = props => {
   );
 };
 
+const visibleItems = ['Home', 'Profile', 'Search'];
+
+
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
@@ -74,9 +98,15 @@ const DrawerNavigator = () => {
       drawerContent={props => <CustomDrawer {...props} />}
     >
       <Drawer.Screen component={Home} name='Home' />
-      <Drawer.Screen component={Tasks} name='Tasks' />
+      <Drawer.Screen component={UserProfile} name='Profile' />
+      <Drawer.Screen component={Search} name='Search' />
+      <Drawer.Screen component={Post} name='Post' />
+      <Drawer.Screen component={AdoptForm} name='Add Adoption Request' />
     </Drawer.Navigator>
   );
 };
+
+
+
 
 export default DrawerNavigator;
