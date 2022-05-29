@@ -17,13 +17,14 @@ import { DrawerActions } from '@react-navigation/native';
 
 // import { PostView } from '../components/PostView'
 
-const UserProfile = ({ navigation }) => {
+const UserProfile = ({ navigation, route }) => {
     const { profile } = useLogin();
     const [posts, setPosts] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
 
     useEffect(() => {
+        console.log("inca o data")
         fetch(`http://localhost:2345/get-all-posts/${profile._id}`, {
             method: "GET",
             headers: {
@@ -69,7 +70,7 @@ const UserProfile = ({ navigation }) => {
             .catch((error) => {
                 console.error(error);
             });
-      }, [profile]);
+      }, [route?.params, navigation]);
     
     const ItemView = ({item}) => {
         return (
@@ -104,14 +105,17 @@ const UserProfile = ({ navigation }) => {
       const handlePatreon = useCallback(async () => {
         // Checking if the link is supported for links with custom URL scheme.
         try {
+            console.log("Handdle Patreon", profile.patreonLink)
             const supported = await Linking.canOpenURL(profile.patreonLink);
-            if (!supported) {
+            if (supported) {
+                await Linking.canOpenURL(profile.patreonLink);
+            } else {
                 Alert.alert(`Don't know how to open this URL: ${profile.patreonLink}`);
             } 
         } catch(e) {
             console.log(e);
         }
-      }, [profile.patreonLink]);
+      }, []);
     
     return (
     <SafeAreaView style={styles.container}>

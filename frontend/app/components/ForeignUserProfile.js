@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  Image,
+  ScrollView,
+  TouchableOpacity } from 'react-native';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useLogin } from '../context/LoginProvider';
+import { DrawerActions } from '@react-navigation/native';
 // import { PostView } from '../components/PostView'
 
 const PostView = (props) => {
@@ -21,13 +29,14 @@ const PostView = (props) => {
 };
 
 
-const ForeignUserProfile = ({ route }) => {
+const ForeignUserProfile = ({ route, navigation }) => {
   const [posts, setPosts] = useState("");
   // let posts = [];
   const list = [];
   const [user, setUser] = useState("");
 
   useEffect(() => {
+
     console.log(route.params.username);
     fetch("http://localhost:2345/get-user", {
       method: "POST",
@@ -86,9 +95,14 @@ const ForeignUserProfile = ({ route }) => {
           <View style={styles.donate}>
             <Ionicons name="cash-outline" size={40} color="#DFD8C8"></Ionicons>
           </View>
-          <View style={styles.adopt}>
-            <Ionicons name="clipboard-outline" size={40} color="#DFD8C8"></Ionicons>
-          </View>
+          <TouchableOpacity style={styles.buttonGPlusStyle}
+            onPress={() =>
+              navigation.dispatch(DrawerActions.jumpTo('Adoption',
+              { username: route.params.username, id: user._id}))}>
+            <View style={styles.adopt}>
+              <Ionicons name="clipboard-outline" size={40} color="#DFD8C8"></Ionicons>
+            </View>
+          </TouchableOpacity>
         </View>
 
         <View style={{ marginTop: 80 }}>

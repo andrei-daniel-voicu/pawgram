@@ -6,7 +6,7 @@ import FormContainer from './FormContainer';
 import FormInput from './FormInput';
 import { useLogin } from '../context/LoginProvider';
 import FormSubmitButton from './FormSubmitButton';
-import { StackActions } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -28,7 +28,7 @@ const validationSchema = Yup.object({
     .required('Phone is required!'),
 });
 
-const AdoptForm = ({ navigation }) => {
+const AdoptForm = ({ navigation, route }) => {
   const { profile } = useLogin();
   const userInfo = {
     firstName: '',
@@ -37,7 +37,7 @@ const AdoptForm = ({ navigation }) => {
     message: '',
     date: new Date(),
     lastName: '',
-    animalId: profile._id,
+    animalId: route.params.id,
     regularId: profile._id
   };
 
@@ -77,7 +77,7 @@ const AdoptForm = ({ navigation }) => {
   };
 
   const signUp = async (values, formikActions) => {    
-      console.log ("De ce de 2 ori")
+      console.log ("De ce de 2 ori animal ID", values)
       const rest = await fetch('http://localhost:2345/create-adoption', {
         method: "POST",
         headers: {
@@ -88,6 +88,10 @@ const AdoptForm = ({ navigation }) => {
 
       formikActions.resetForm();
       formikActions.setSubmitting(false);
+      const jumpToAction = 
+        DrawerActions.jumpTo('ForeignProfile', 
+          { username: route.params.username});
+      navigation.dispatch(jumpToAction);
   };
 
   return (
