@@ -127,8 +127,8 @@ const UserProfile = ({ navigation }) => {
                             uri:
                                 profile.avatar ||
                                 'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
-                            }}
-                         style={styles.image} resizeMode="center"></Image>
+                        }}
+                            style={styles.image} resizeMode="center"></Image>
                     </View>
                 </View>
 
@@ -214,7 +214,7 @@ const UserProfile = ({ navigation }) => {
 
             </ScrollView>
         </SafeAreaView>
-  );
+    );
 };
 
 const styles = StyleSheet.create({

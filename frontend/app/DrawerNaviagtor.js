@@ -8,20 +8,20 @@ import {
 } from '@react-navigation/drawer';
 
 import Home from './components/Home';
-import Search from './components/Search';
+import SearchList from './components/SearchList';
 import UserProfile from './components/UserProfile';
 import Post from './components/Post';
 import AdoptForm from './components/AdoptForm';
 import Example from './components/Example';
 import { useLogin } from './context/LoginProvider';
-
+import ForeignUserProfile from './components/ForeignUserProfile'
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = (props, { navigation }) => {
-  const { profile} = useLogin();
+  const { profile } = useLogin();
   const { state, ...rest } = props;
-  const newState = { ...state}  //copy from state before applying any filter. do not change original state
-  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'UserProfile', 'Example'].includes(item.name)) //replace "Login' with your route name
+  const newState = { ...state }  //copy from state before applying any filter. do not change original state
+  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'UserProfile', 'Example', 'ForeignProfile'].includes(item.name)) //replace "Login' with your route name
 
   return (
     <View style={{ flex: 1 }}>
@@ -72,7 +72,7 @@ const CustomDrawer = (props, { navigation }) => {
   );
 };
 
-const visibleItems = ['Home', 'Profile', 'Search'];
+const visibleItems = ['Home', 'Profile', 'SearchList'];
 
 
 const DrawerNavigator = () => {
@@ -91,7 +91,8 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen component={Home} name='Home' />
       <Drawer.Screen component={UserProfile} name='Profile' />
-      <Drawer.Screen component={Search} name='Search' />
+      <Drawer.Screen component={ForeignUserProfile} name='ForeignProfile' />
+      <Drawer.Screen component={SearchList} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
       <Drawer.Screen component={AdoptForm} name='Adoption' />
       <Drawer.Screen component={Example} name='Example' />
