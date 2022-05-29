@@ -16,6 +16,35 @@ exports.createUser = async (req, res) => {
   res.json({ success: true, user });
 };
 
+exports.getUser = async (req, res) => {
+  const name = req.body["name"]
+
+  try {
+      const user = await User.findOne(
+        {
+        'username': { $in: name}},
+        function (err, obj) {
+          if(err) return console.log(err);
+          console.log("obj ", obj);
+        }
+      );
+
+      res.send(user)
+  } catch (e) {
+      res.status(500).send()
+  }
+};
+
+
+exports.getAllUsers =  async (req, res) => {
+  try {
+      const users = await User.find({})
+      res.send(users)
+  } catch (e) {
+      res.status(500).send()
+  }
+};
+
 exports.userSignIn = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne(

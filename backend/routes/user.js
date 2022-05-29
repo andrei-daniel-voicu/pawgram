@@ -12,7 +12,9 @@ const {
   addFollower,
   addFollowing,
   addAdoption,
-  addNotification
+  addNotification,
+  getAllUsers,
+  getUser
 } = require('../controllers/user');
 
 const { isAuth } = require('../middlewares/auth');
@@ -36,6 +38,8 @@ const fileFilter = (req, file, cb) => {
 const uploads = multer({ storage, fileFilter });
 
 router.post('/create-user', validateUserSignUp, userVlidation, createUser);
+router.post('/get-user', getUser);
+router.get('/get-all-users', getAllUsers);
 router.post('/sign-in', validateUserSignIn, userVlidation, userSignIn);
 router.post('/sign-out', isAuth, signOut);
 router.post(
