@@ -104,8 +104,8 @@ const DrawerNavigator = () => {
       <Drawer.Screen component={SearchList} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
       <Drawer.Screen component={AdoptForm} name='Add Adoption Request' />
-      <Drawer.Screen component={AdoptList} name='Adopt List' />
-      <Drawer.Screen component={AdoptView} name='Adopt View' />
+      <Drawer.Screen component={AdoptList} name='AdoptList' />
+      <Drawer.Screen component={AdoptView} name='AdoptView' />
     </Drawer.Navigator>
   );
 };

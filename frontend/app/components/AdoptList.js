@@ -30,7 +30,7 @@ import {
 
  
 
-const AdoptList = () => {
+const AdoptList = ({navigation}) => {
 
   const { setIsLoggedIn, profile } = useLogin();
 
@@ -168,8 +168,8 @@ const AdoptList = () => {
   const getItem = (item) => {
 
     // Function for click on an item
-
-    navigation.dispatch(DrawerActions.jumpTo('AdoptView', item));
+    const jumpToAction = DrawerActions.jumpTo('AdoptView', { id: item['_id'], });
+    navigation.dispatch(jumpToAction);
 
   };
 

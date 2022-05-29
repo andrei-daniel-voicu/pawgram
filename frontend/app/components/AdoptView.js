@@ -1,19 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import { SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
+import { Button, View, SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 
-const AdoptView = (props) => {
+const AdoptView = ({route}, {navigation}) => {
+
+  const [adopt, setAdopt] = useState("");
 
   useEffect(() => {
 
-    fetch(`http://localhost:2345/get-adoption-request/${props._id}`)
+    fetch(`http://localhost:2345/get-adoption-request/${route.params.id}`)
 
       .then((response) => response.json())
 
       .then((responseJson) => {
 
-        setFilteredDataSource(responseJson);
-
-        setMasterDataSource(responseJson);
+        setAdopt(responseJson);
+        return responseJson;
 
       })
 
@@ -22,45 +24,47 @@ const AdoptView = (props) => {
         console.error(error);
 
       });
-    })
+    }, [route])
 
   return (
     <SafeAreaView>
       <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15,  marginTop:5}}>
             {'First Name'}</Text>
-      <TextInput
-        style={styles.input}
-        value={"text"}
-        editable={false}
-      />
+      <Text style={styles.input}>
+        {adopt['firstName']}</Text>
+
       <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15,  marginTop:5}}>
           {'Last Name'}</Text>
-      <TextInput
-        style={styles.input}
-        value={"text"}
-        editable={false}
-      />
+      <Text style={styles.input}>
+      {adopt['lastName']}</Text>
+
       <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15,  marginTop:5}}>
           {'Address'}</Text>
-      <TextInput
-        style={styles.input}
-        value={"text"}
-        editable={false}
-      />
+      <Text style={styles.input}>
+        {adopt['address']}</Text>
+
       <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15,  marginTop:5}}>
           {'Phone'}</Text>
-      <TextInput
-        style={styles.input}
-        value={"text"}
-        editable={false}
-      />
+      <Text style={styles.input}>
+        {adopt['phone']}</Text>
+
       <Text style={{color: 'black', fontWeight: 'bold', fontSize: 15,  marginTop:5}}>
           {'Message'}</Text>
-      <TextInput
-        style={styles.input}
-        value={"text"}
-        editable={false}
-      />
+      <Text style={styles.input}>{adopt['message']}</Text>
+
+      <View style={styles.fixToText}>
+        <Button
+          color="#25d622"
+          title="Accept"
+          onPress={() => navigation.dispatch(DrawerActions.jumpTo('AdoptList'))}
+        />
+        <Button
+          color="#f01e13"
+          title="Reject"
+          onPress={() => navigation.dispatch(DrawerActions.jumpTo('AdoptList'))}
+        />
+      </View>
+
     </SafeAreaView>
   );
 };
@@ -71,6 +75,10 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  fixToText: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
 
