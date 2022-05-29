@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/drawer';
 
 import Home from './components/Home';
-import Search from './components/Search';
+import SearchList from './components/SearchList';
 import UserProfile from './components/UserProfile';
 import Post from './components/Post';
 import AdoptForm from './components/AdoptForm'
@@ -99,7 +99,7 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen component={Home} name='Home' />
       <Drawer.Screen component={UserProfile} name='Profile' />
-      <Drawer.Screen component={Search} name='Search' />
+      <Drawer.Screen component={SearchList} name='SearchList' />
       <Drawer.Screen component={Post} name='Post' />
       <Drawer.Screen component={AdoptForm} name='Add Adoption Request' />
     </Drawer.Navigator>
