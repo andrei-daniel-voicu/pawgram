@@ -42,18 +42,18 @@ const CustomDrawer = (props, { navigation }) => {
           </View>
           {/* <TouchableOpacity style={styles.buttonGPlusStyle}
             onPress={() => navigation.dispatch(DrawerActions.jumpTo('Profile'))}> */}
-          <Image
-            source={{
-              uri:
-                profile.avatar ||
-                'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
-            }}
-            style={{ width: 60, height: 60, borderRadius: 30 }}
-          />
-
+            <Image
+              source={{
+                uri:
+                  profile.avatar ||
+                  'https://avatarairlines.com/wp-content/uploads/2020/05/Male-placeholder.jpeg',
+              }}
+              style={{ width: 60, height: 60, borderRadius: 30 }}
+            />
+            
           {/* </TouchableOpacity> */}
         </View>
-        <DrawerItemList state={newState} {...rest} />
+        <DrawerItemList state={newState} {...rest}/>
       </DrawerContentScrollView>
       <TouchableOpacity
         style={{
@@ -83,9 +83,9 @@ const DrawerNavigator = () => {
         headerStyle: {
           backgroundColor: 'transparent',
           elevation: 0,
-          shadowOpacity: 0,
+          shadowOpacity: 0
         },
-        headerTitle: '',
+        headerTitle: 'Pawgram',
       }}
       drawerContent={props => <CustomDrawer {...props} />}
     >

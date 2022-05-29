@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Adoption = require('../models/adoption');
 const sharp = require('sharp');
 const cloudinary = require('../helper/imageUpload');
 
@@ -95,9 +96,9 @@ exports.userSignIn = async (req, res) => {
     avatar: user.avatar ? user.avatar : '',
     username: user.username,
     patreonLink: user.patreonLink,
-    // postList: user.postList,
-    // followingList: user.followingList,
-    // followersList: user.followersList,
+    //postList: user.postList,
+    //followingList: user.followingList,
+    //followersList: user.followersList,
     // adoptionList: user.adoptionList
   };
 
@@ -304,6 +305,70 @@ exports.addAdoption = async (req, res) => {
       }
 
       res.send(user)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.getAdoptionList = async (req, res) => {
+  console.log("Aici")
+  const _id = req.params.id
+
+  try {
+      const user = await User.findById(_id)
+      if (!user) {
+          // console.log(post)
+          return res.status(404).send()
+      }
+  
+      // console.log("User", user, user["adoptionRequestList"])
+      const adoptions = await Adoption.find({
+          '_id': { $in: user["adoptionRequestList"]}
+      });
+
+      res.send(adoptions)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.getFollowers = async (req, res) => {
+  console.log("Aici")
+  const _id = req.params.id
+
+  try {
+      const user = await User.findById(_id)
+      if (!user) {
+          // console.log(post)
+          return res.status(404).send()
+      }
+      // console.log("User", user, user["adoptionRequestList"])
+      const followers = await User.find({
+          '_id': { $in: user["followersList"]}
+      });
+
+      res.send(followers)
+  } catch (e) {
+      res.status(400).send(e)
+  }
+};
+
+exports.getFollowing = async (req, res) => {
+  console.log("Aici")
+  const _id = req.params.id
+
+  try {
+      const user = await User.findById(_id)
+      if (!user) {
+          // console.log(post)
+          return res.status(404).send()
+      }
+      // console.log("User", user, user["adoptionRequestList"])
+      const followers = await User.find({
+          '_id': { $in: user["followingList"]}
+      });
+
+      res.send(followers)
   } catch (e) {
       res.status(400).send(e)
   }

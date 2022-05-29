@@ -1,10 +1,7 @@
 // import React from 'react';
 import * as React from 'react';
 import { Button, View, StyleSheet, Text } from 'react-native';
-import { NavigationContainer, DrawerActions } from '@react-navigation/native';
-import { createNativeNavigator } from '@react-navigation/drawer';
-
-import Post from './Post';
+import { DrawerActions } from '@react-navigation/native';
 
 const Home = ({ navigation }) => {
   return (
