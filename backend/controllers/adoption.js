@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Adoption = require('../models/adoption');
+const User = require('../models/user');
 const sharp = require('sharp');
 const cloudinary = require('../helper/imageUpload');
 
@@ -10,7 +11,7 @@ exports.createAdoption = async (req, res) => {
         await adoption.save()
 
         const user = await User.updateOne(
-            { _id: req.params.id},
+            { _id: adoption.animalId},
             {"$push": { "adoptionRequestList": adoption._id } }
             ).exec();
 
