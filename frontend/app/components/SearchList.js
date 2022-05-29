@@ -44,7 +44,6 @@ const SearchList = ({ navigation }) => {
       .then((response) => response.json())
 
       .then((responseJson) => {
-        console.log(responseJson);
         setFilteredDataSource(responseJson);
 
         setMasterDataSource(responseJson);
@@ -121,10 +120,6 @@ const SearchList = ({ navigation }) => {
 
         onPress={() => getItem(item)}>
 
-        {item.id}
-
-        {'.'}
-
         {item['username'].toUpperCase()}
 
       </Text>
@@ -165,7 +160,8 @@ const SearchList = ({ navigation }) => {
 
     // Function for click on an item
 
-    navigation.dispatch(DrawerActions.jumpTo('ForeignProfile'));
+    const jumpToAction = DrawerActions.jumpTo('ForeignProfile', { username: item['username'], });
+    navigation.dispatch(jumpToAction);
   };
 
 
