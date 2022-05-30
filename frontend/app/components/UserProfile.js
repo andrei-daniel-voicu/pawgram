@@ -15,7 +15,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useLogin } from '../context/LoginProvider';
 import { DrawerActions } from '@react-navigation/native';
 
-// import { PostView } from '../components/PostView'
+import PostView from '../components/PostView';
 
 const UserProfile = ({ navigation }) => {
     const { profile } = useLogin();
@@ -78,18 +78,18 @@ const UserProfile = ({ navigation }) => {
     }, [profile]);
 
     const ItemView = ({ item }) => {
-        state = {
-            like: 'Unlike',
-            liked: false
-        }
-        selectLike = () => {
-            this.setState(prevstate => {
-                return {
-                    ...prevstate,
-                    like: (prevstate.liked ? 'Unlike' : 'like'), liked: !prevstate.liked
-                }
-            })
-        }
+        // state = {
+        //     like: 'Unlike',
+        //     liked: false
+        // }
+        // selectLike = () => {
+        //     this.setState(prevstate => {
+        //         return {
+        //             ...prevstate,
+        //             like: (prevstate.liked ? 'Unlike' : 'like'), liked: !prevstate.liked
+        //         }
+        //     })
+        // }
         return (
             <View style={styles.mediaImageContainer}>
                 <Text
@@ -255,7 +255,9 @@ const UserProfile = ({ navigation }) => {
                             data={posts}
                             keyExtractor={(item, index) => index.toString()}
                             ItemSeparatorComponent={ItemSeparatorView}
-                            renderItem={ItemView}
+                            renderItem={PostView}
+                            user={profile}
+                            profile={profile}
                         />
                     </ScrollView>
                 </View>
