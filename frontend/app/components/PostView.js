@@ -15,9 +15,11 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import { DrawerActions } from '@react-navigation/native';
 
-const PostView = ({item, profile, user}) => {
+const PostView = (props) => {
     let icon_name = false;
-   
+    const item = props["item"]["item"];
+    const profile = props["profile"];
+    console.log("Props", props)
     return (
         <View style={styles.mediaImageContainer}>
         <Text

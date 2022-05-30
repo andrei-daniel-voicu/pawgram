@@ -29,7 +29,7 @@ exports.getUser = async (req, res) => {
           console.log("obj ", obj);
         }
       );
-
+      console.log("The user", user["username"])
       res.send(user)
   } catch (e) {
       res.status(500).send()

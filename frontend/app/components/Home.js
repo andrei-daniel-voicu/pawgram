@@ -14,6 +14,7 @@ import {
   Alert
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useLogin } from '../context/LoginProvider';
 
 const Home = ({ navigation, route }) => {
@@ -55,22 +56,59 @@ const Home = ({ navigation, route }) => {
         console.error(error);
     });
   }, [route?.params, navigation]);
-  const ItemView = ({item}) => {
+  const ItemView = ({ item }) => {
+    var icon_name = false;
+   
     return (
         <View style={styles.mediaImageContainer}>
             <Text
-            style={styles.itemStyle}
+                style={styles.itemStyle}
             // onPress={() => getItem(item)}
             >
-            {item["text"]}
-            
+                {item["text"]}
+
             </Text>
-            <Image source={ 
+            <TouchableOpacity style={styles.buttonGPlusStyle} onPress={async () => {
+                let found = false;
+                console.log(icon_name);
+
+                for (let i = 0; i < item["likesList"].length; i++) {
+                    if (item["likesList"][i] === profile._id) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == false) {
+
+                    const rest = await fetch(`http://localhost:2345/add-like/${item['_id']}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            id: profile._id,
+                        })
+                    })
+                }
+                else {
+                    icon_name = true;
+                }
+                console.log(icon_name);
+            }}>
+                <View style={styles.likeButton}
+                >
+                    {icon_name === true ? <Ionicons name="thumbs-up" size={40} color="#DFD8C8"></Ionicons>
+                        : <Ionicons name="thumbs-up-outline" size={40} color="#DFD8C8"></Ionicons>}
+
+                </View>
+            </TouchableOpacity>
+
+            <Image source={
                 item["photoLink"]}
                 style={styles.image} resizeMode="cover"></Image>
-        </View>
+        </View >
     );
-  };
+};
  
   const ItemSeparatorView = () => {
     return (
@@ -120,6 +158,9 @@ mediaImageContainer: {
   overflow: "hidden",
   marginHorizontal: 10
 },
+likeButton: {
+  marginRight: 10
+}
 });
 
 export default Home;

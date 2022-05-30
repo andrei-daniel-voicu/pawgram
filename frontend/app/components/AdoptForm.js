@@ -49,6 +49,8 @@ const AdoptForm = ({ navigation, route }) => {
     setUserInfo({ ...userInfo, [fieldName]: value });
   };
 
+  console.log("AnimalId", route.params.id)
+
   const isValidForm = () => {
     // we will accept only if all of the fields have value
 

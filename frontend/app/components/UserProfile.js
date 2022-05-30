@@ -79,18 +79,8 @@ const UserProfile = ({ navigation, route }) => {
     }, [profile]);
 
     const ItemView = ({ item }) => {
-        // state = {
-        //     like: 'Unlike',
-        //     liked: false
-        // }
-        // selectLike = () => {
-        //     this.setState(prevstate => {
-        //         return {
-        //             ...prevstate,
-        //             like: (prevstate.liked ? 'Unlike' : 'like'), liked: !prevstate.liked
-        //         }
-        //     })
-        // }
+        var icon_name = false;
+       
         return (
             <View style={styles.mediaImageContainer}>
                 <Text
@@ -123,7 +113,7 @@ const UserProfile = ({ navigation, route }) => {
                         })
                     }
                     else {
-                        setIconName(true);
+                        icon_name = true;
                     }
                     console.log(icon_name);
                 }}>
@@ -259,9 +249,9 @@ const UserProfile = ({ navigation, route }) => {
                             data={posts}
                             keyExtractor={(item, index) => index.toString()}
                             ItemSeparatorComponent={ItemSeparatorView}
-                            renderItem={PostView}
-                            user={profile}
-                            profile={profile}
+                            renderItem={ItemView}
+                                // (item)=>
+                                // <PostView item={item} profile={profile}></PostView>}
                         />
                     </ScrollView>
                 </View>

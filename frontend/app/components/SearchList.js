@@ -160,7 +160,7 @@ const SearchList = ({ navigation }) => {
 
     // Function for click on an item
 
-    const jumpToAction = DrawerActions.jumpTo('ForeignProfile', { username: item['username'], });
+    const jumpToAction = DrawerActions.jumpTo('ForeignProfile', { username: item['username']});
     navigation.dispatch(jumpToAction);
   };
 
