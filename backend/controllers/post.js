@@ -6,7 +6,7 @@ const cloudinary = require('../helper/imageUpload');
 
 exports.createPost = async (req, res) => {
     // const _id = req.params.id
-    console.log("Aici")
+    // console.log("Aici")
     const post = new Post(req.body)
     try {
         // console.log(req.body)
@@ -30,7 +30,7 @@ exports.createPost = async (req, res) => {
 
 exports.getPostsUser = async (req, res) => {
     const _id = req.params.id
-    console.log("User id", _id)
+    // console.log("User id", _id)
     try {
         const user = await User.findById(_id)
 
@@ -39,12 +39,31 @@ exports.getPostsUser = async (req, res) => {
             return res.status(404).send()
         }
     
-        console.log("User", user, user["postList"])
+        // console.log("User", user, user["postList"])
         const posts = await Post.find({
             '_id': { $in: user["postList"]}
         });
 
         res.send(posts)
+    } catch (e) {
+        res.status(500).send()
+    }
+};
+
+exports.getPostsFollowing = async (req, res) => {
+    const users = req.body
+    const idsArr = users.map((x) => x["postList"])
+    const ids = [].concat.apply([], idsArr);
+    try {
+        const posts = await Post.find({
+            '_id': { $in: ids}
+        });
+        if (posts.length === 0) {
+            return res.status(404).send()
+        }
+        const post = posts.sort((a, b) =>
+          a.date > b.date ? 1 : -1);
+        res.send(post)
     } catch (e) {
         res.status(500).send()
     }

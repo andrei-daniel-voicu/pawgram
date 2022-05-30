@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useLogin } from '../context/LoginProvider';
+import { DrawerActions } from '@react-navigation/native';
 // import { PostView } from '../components/PostView'
 
 const PostView = (props) => {
@@ -32,7 +33,7 @@ const PostView = (props) => {
 };
 
 
-const ForeignUserProfile = ({ route }) => {
+const ForeignUserProfile = ({ route, navigation }) => {
   const [posts, setPosts] = useState("");
   // let posts = [];
   const list = [];
@@ -41,6 +42,7 @@ const ForeignUserProfile = ({ route }) => {
   const [following, setFollowing] = useState([]);
 
   useEffect(() => {
+
     console.log(route.params.username);
     fetch("http://localhost:2345/get-user", {
       method: "POST",

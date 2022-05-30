@@ -7,6 +7,7 @@ import FormInput from './FormInput';
 import { useLogin } from '../context/LoginProvider';
 import FormSubmitButton from './FormSubmitButton';
 import { StackActions } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -80,7 +81,8 @@ const Post = ({ navigation }) => {
       setProfile(profile);
       formikActions.resetForm();
       formikActions.setSubmitting(false);
-      
+      const jumpToAction = DrawerActions.jumpTo('Profile', { name: userInfo.text });
+      navigation.dispatch(jumpToAction);
   };
 
   return (

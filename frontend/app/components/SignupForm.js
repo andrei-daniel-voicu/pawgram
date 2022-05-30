@@ -58,7 +58,6 @@ const SignupForm = ({ navigation }) => {
   const isValidForm = () => {
     // we will accept only if all of the fields have value
 
-    console.log("Validare ce naiba frate")
     if (!isValidObjField(userInfo))
       return updateError('Required all fields!', setError);
     // if valid name with 3 or more characters
@@ -82,7 +81,7 @@ const SignupForm = ({ navigation }) => {
   const submitForm = () => {
     if (isValidForm()) {
       // submit form
-      console.log(userInfo);
+      // console.log(userInfo);
     }
   };
 
@@ -96,8 +95,7 @@ const SignupForm = ({ navigation }) => {
         },
         body: JSON.stringify(values),
       })
-
-      // Promise.all([rest]).then(data => {  
+      
       if (rest.ok) {
         const read = rest.body
           .pipeThrough(new TextDecoderStream())
@@ -129,8 +127,8 @@ const SignupForm = ({ navigation }) => {
           if (done) break;
           data = value;
         }
-        const result = JSON.parse(data);
-        console.log("Result", result)
+        const result = JSON.parse(data);   
+        // console.log("Result", result)  
         if (result.success) {
           navigation.dispatch(
             StackActions.replace('ImageUpload', {
