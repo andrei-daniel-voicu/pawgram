@@ -43,7 +43,7 @@ const SignupForm = ({ navigation }) => {
     confirmPassword: '',
     date: new Date(),
     username: '',
-    type: 'Animal',
+    type: '',
     patreonLink: ''
   };
 
@@ -73,7 +73,8 @@ const SignupForm = ({ navigation }) => {
     // password and confirm password must be the same
     if (password !== confirmPassword)
       return updateError('Password does not match!', setError);
-
+    if (type !== "Animal" && type !== "Regular")
+      return updateError('Type can only be Animal or Regular!', setError);
     return true;
   };
 
@@ -85,7 +86,8 @@ const SignupForm = ({ navigation }) => {
   };
 
   const signUp = async (values, formikActions) => {
-    try {   
+    try {
+      values.type = userInfo.type;
       const rest = await fetch('http://localhost:2345/create-user', {
         method: "POST",
         headers: {
@@ -96,8 +98,8 @@ const SignupForm = ({ navigation }) => {
       
       if (rest.ok) {
         const read = rest.body
-        .pipeThrough(new TextDecoderStream())
-        .getReader();
+          .pipeThrough(new TextDecoderStream())
+          .getReader();
         let data1 = '';
         while (true) {
           const { value, done } = await read.read();
@@ -114,11 +116,11 @@ const SignupForm = ({ navigation }) => {
             email: resu["user"]["email"],
             password: values.password
           })
-         })
- 
+        })
+
         const reader = res.body
-        .pipeThrough(new TextDecoderStream())
-        .getReader();
+          .pipeThrough(new TextDecoderStream())
+          .getReader();
         let data = '';
         while (true) {
           const { value, done } = await reader.read();
@@ -137,15 +139,15 @@ const SignupForm = ({ navigation }) => {
           setProfile(result.user);
           setIsLoggedIn(true);
         }
-      } else { console.log ("Nu e succes") }
+      } else { console.log("Nu e succes") }
 
       formikActions.resetForm();
       formikActions.setSubmitting(false);
-    // });
-      } catch (e) {
-        console.log(e);
+      // });
+    } catch (e) {
+      console.log(e);
 
-      }
+    }
   };
 
   return (
@@ -214,8 +216,23 @@ const SignupForm = ({ navigation }) => {
               />
               <FormSubmitButton
                 submitting={isSubmitting}
-                onPress={handleSubmit}
-                title='Sign up'
+                onPress={() => {
+                  userInfo.type = "Regular";
+                  handleSubmit();
+                }}
+                title='Sign up Regular'
+              />
+              <Text style={styles.baseText}>
+
+                {"OR"}
+              </Text>
+              <FormSubmitButton
+                submitting={isSubmitting}
+                onPress={() => {
+                  userInfo.type = "Animal";
+                  handleSubmit();
+                }}
+                title='Sign up Animal '
               />
             </>
           );
@@ -225,6 +242,13 @@ const SignupForm = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  baseText: {
+    color: 'blue',
+    fontSize: 20,
+    textAlign: 'center',
+    fontFamily: "Cochin"
+  },
+});
 
 export default SignupForm;
