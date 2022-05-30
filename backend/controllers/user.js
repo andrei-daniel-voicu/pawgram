@@ -175,7 +175,7 @@ exports.editProfileUser = async (req, res) => {
 }
 
 exports.addPostIdToPostList = async (req, res) => {
-  console.log("add Post to User", req.params.id, req.body)
+  // console.log("add Post to User", req.params.id, req.body)
   const updates = Object.keys(req.body)
   const allowedUpdates = ['id']
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -233,14 +233,14 @@ exports.deleteUser = async (req, res) => {
 };
 
 exports.addFollower = async (req, res) => {
-  console.log("Aici")
+  // console.log("Aici")
   const updates = Object.keys(req.body)
   const allowedUpdates = ['id']
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
   if (!isValidOperation) {
       return res.status(400).send({ error: 'Invalid updates!' })
   }
-  console.log("Follower", req.body)
+  // console.log("Follower", req.body)
 
   try {
       const user = await User.updateOne(
@@ -259,14 +259,14 @@ exports.addFollower = async (req, res) => {
 };
 
 exports.addFollowing = async (req, res) => {
-  console.log("Aici")
+  // console.log("Aici")
   const updates = Object.keys(req.body)
   const allowedUpdates = ['id']
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
   if (!isValidOperation) {
       return res.status(400).send({ error: 'Invalid updates!' })
   }
-  console.log("Following", req.body)
+  // console.log("Following", req.body)
 
   try {
       const user = await User.updateOne(
@@ -285,14 +285,14 @@ exports.addFollowing = async (req, res) => {
 };
 
 exports.addAdoption = async (req, res) => {
-  console.log("Aici")
+  // console.log("Aici")
   const updates = Object.keys(req.body)
   const allowedUpdates = ['id']
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
   if (!isValidOperation) {
       return res.status(400).send({ error: 'Invalid updates!' })
   }
-  console.log("adoption", req.body)
+  // console.log("adoption", req.body)
 
   try {
       const user = await User.updateOne(
@@ -311,7 +311,7 @@ exports.addAdoption = async (req, res) => {
 };
 
 exports.getAdoptionList = async (req, res) => {
-  console.log("Aici")
+  // console.log("Aici")
   const _id = req.params.id
 
   try {
@@ -321,11 +321,11 @@ exports.getAdoptionList = async (req, res) => {
           return res.status(404).send()
       }
   
-      // console.log("User", user, user["adoptionRequestList"])
+      // console.log("User", user["adoptionRequestList"])
       const adoptions = await Adoption.find({
           '_id': { $in: user["adoptionRequestList"]}
       });
-
+      // console.log("adoptiile", adoptions)
       res.send(adoptions)
   } catch (e) {
       res.status(400).send(e)
@@ -333,7 +333,7 @@ exports.getAdoptionList = async (req, res) => {
 };
 
 exports.getFollowers = async (req, res) => {
-  console.log("Aici")
+  // console.log("Aici")
   const _id = req.params.id
 
   try {
@@ -354,7 +354,7 @@ exports.getFollowers = async (req, res) => {
 };
 
 exports.getFollowing = async (req, res) => {
-  console.log("Aici")
+  // console.log("Aici")
   const _id = req.params.id
 
   try {
@@ -375,14 +375,14 @@ exports.getFollowing = async (req, res) => {
 };
 
 exports.addNotification = async (req, res) => {
-  console.log("Aici")
+  // console.log("Aici")
   const updates = Object.keys(req.body)
   const allowedUpdates = ['id']
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
   if (!isValidOperation) {
       return res.status(400).send({ error: 'Invalid updates!' })
   }
-  console.log("adoption", req.body)
+  // console.log("adoption", req.body)
 
   try {
       const user = await User.updateOne(
