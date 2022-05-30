@@ -7,6 +7,8 @@ const cloudinary = require('../helper/imageUpload');
 exports.createAdoption = async (req, res) => {
     try {
         const adoption = new Adoption(req.body)
+        await adoption.save()
+        // console.log("Adoption", adoption, adoption.animalId, adoption._id)
         const user = await User.updateOne(
             { _id: adoption.animalId},
             {"$push": { "adoptionRequestList": adoption._id } }

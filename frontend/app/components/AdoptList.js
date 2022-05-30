@@ -1,34 +1,17 @@
-// Searching using Search Bar Filter in React Native List View
 
-// https://aboutreact.com/react-native-search-bar-filter-on-listview/
-
- 
-
-// import React in our code
 
 import React, {useState, useEffect} from 'react';
 import { useLogin } from '../context/LoginProvider';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 
-// import all the components we are going to use
-
 import {
-
   SafeAreaView,
-
   Text,
-
   StyleSheet,
-
   View,
-
   FlatList,
-
   TextInput,
-
 } from 'react-native';
-
- 
 
 const AdoptList = ({route, navigation}) => {
 
@@ -47,7 +30,7 @@ const AdoptList = ({route, navigation}) => {
       .then((response) => response.json())
 
       .then((responseJson) => {
-
+        // console.log("raspunsul", responseJson)
         setFilteredDataSource(responseJson);
 
         setMasterDataSource(responseJson);

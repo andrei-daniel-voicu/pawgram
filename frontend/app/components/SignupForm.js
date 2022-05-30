@@ -58,7 +58,6 @@ const SignupForm = ({ navigation }) => {
   const isValidForm = () => {
     // we will accept only if all of the fields have value
 
-    console.log("Validare ce naiba frate")
     if (!isValidObjField(userInfo))
       return updateError('Required all fields!', setError);
     // if valid name with 3 or more characters
@@ -81,7 +80,7 @@ const SignupForm = ({ navigation }) => {
   const submitForm = () => {
     if (isValidForm()) {
       // submit form
-      console.log(userInfo);
+      // console.log(userInfo);
     }
   };
 
@@ -127,7 +126,7 @@ const SignupForm = ({ navigation }) => {
           data = value;
         }
         const result = JSON.parse(data);   
-        console.log("Result", result)  
+        // console.log("Result", result)  
         if (result.success) {
           navigation.dispatch(
             StackActions.replace('ImageUpload', {

@@ -30,7 +30,7 @@ const AdoptView = ({route, navigation}) => {
   
      const accept_adoption = async() => {
   
-        console.log("inainte fetch\n", route.params.id,  adopt['animalId']);
+        // console.log("inainte fetch\n", route.params.id,  adopt['animalId']);
             try {
                 const res = await fetch(`http://localhost:2345/delete-adoption/${route.params.id}`, {
                     method: "DELETE",
@@ -41,7 +41,7 @@ const AdoptView = ({route, navigation}) => {
                     id: adopt['animalId'],
                   })
                 });
-                console.log("dupa fetch\n");
+                // console.log("dupa fetch\n");
 
             } catch (e) {
                 console.log(e);

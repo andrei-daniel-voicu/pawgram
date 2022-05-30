@@ -193,7 +193,7 @@ const UserProfile = ({ navigation, route }) => {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonGPlusStyle}
-                        onPress={() => navigation.dispatch(DrawerActions.jumpTo('Adoption'))}>
+                        onPress={() => navigation.dispatch(DrawerActions.jumpTo('AdoptList', {name: profile._id}))}>
                         <View style={styles.adopt}>
                             <Ionicons name="clipboard-outline" size={40} color="#DFD8C8"></Ionicons>
                         </View>

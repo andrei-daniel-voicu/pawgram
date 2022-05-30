@@ -6,7 +6,7 @@ const cloudinary = require('../helper/imageUpload');
 
 exports.createPost = async (req, res) => {
     // const _id = req.params.id
-    console.log("Aici")
+    // console.log("Aici")
     const post = new Post(req.body)
     try {
         // console.log(req.body)
@@ -30,7 +30,7 @@ exports.createPost = async (req, res) => {
 
 exports.getPostsUser = async (req, res) => {
     const _id = req.params.id
-    console.log("User id", _id)
+    // console.log("User id", _id)
     try {
         const user = await User.findById(_id)
 
@@ -39,7 +39,7 @@ exports.getPostsUser = async (req, res) => {
             return res.status(404).send()
         }
     
-        console.log("User", user, user["postList"])
+        // console.log("User", user, user["postList"])
         const posts = await Post.find({
             '_id': { $in: user["postList"]}
         });

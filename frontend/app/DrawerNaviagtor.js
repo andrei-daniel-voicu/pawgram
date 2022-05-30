@@ -22,7 +22,8 @@ const CustomDrawer = (props, { navigation }) => {
   const { profile, setIsLoggedIn } = useLogin();
   const { state, ...rest } = props;
   const newState = { ...state }  //copy from state before applying any filter. do not change original state
-  newState.routes = newState.routes.filter(item => !['Post', 'Adoption', 'Example', 'ForeignProfile'].includes(item.name)) //replace "Login' with your route name
+  newState.routes = newState.routes.filter(item =>
+    !['Post', 'Adoption', 'Example', 'ForeignProfile', 'AdoptView'].includes(item.name)) //replace "Login' with your route name
 
   return (
     <View style={{ flex: 1 }}>
@@ -61,7 +62,7 @@ const CustomDrawer = (props, { navigation }) => {
           position: 'absolute',
           right: 0,
           left: 0,
-          bottom: 50,
+          bottom: 0,
           backgroundColor: '#f6f6f6',
           padding: 20,
         }}
@@ -94,7 +95,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen component={UserProfile} name='Profile' />
       <Drawer.Screen component={SearchList} name='Search' />
       <Drawer.Screen component={Post} name='Post' />
-      <Drawer.Screen component={AdoptForm} name='Add Adoption Request' />
+      <Drawer.Screen component={AdoptForm} name='Adoption' />
       <Drawer.Screen component={AdoptList} name='AdoptList' />
       <Drawer.Screen component={AdoptView} name='AdoptView' />
       <Drawer.Screen component={ForeignUserProfile} name='ForeignProfile' />
